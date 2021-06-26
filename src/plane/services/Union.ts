@@ -3,7 +3,7 @@ import { Service } from ".";
 export class Union implements Service {
   static namespace = 'union'
   path: null | paper.Path = null
-  
+
   hitOptions = {
     // segments: true,
     // stroke: true,

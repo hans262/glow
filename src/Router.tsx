@@ -15,6 +15,7 @@ const DuckShooter = lazy(() => import('./duckshooter'))
 const G6Graphic = lazy(() => import('./g6'))
 const Plane = lazy(() => import('./plane'))
 const IconView = lazy(() => import('./icon'))
+const MathJax = lazy(() => import('./test/MathJax'))
 
 export default function Router() {
   return (
@@ -31,6 +32,7 @@ export default function Router() {
           <Route path="/g6" component={G6Graphic} />
           <Route path="/plane" component={Plane} />
           <Route path="/icon" component={IconView} />
+          <Route path="/mathjax" component={MathJax} />
 
           <Redirect from="*" to="/"></Redirect>
         </Switch>

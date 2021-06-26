@@ -4,6 +4,7 @@ declare interface Window {
   ClipperLib: any
 
   MediaRecorder: any
+  MathJax: any
 }
 
 declare module '*.ogg' {

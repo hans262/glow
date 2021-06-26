@@ -49,6 +49,7 @@ class ViewGraphic extends PureComponent<ViewGraphicProps> {
     this.resizePaperSub = observable.subscribe(e => {
       this.paper.view.viewSize = new this.paper.Size(e.width, e.height)
     })
+    console.log(this.paper.project)
   }
 
   componentDidUpdate() {

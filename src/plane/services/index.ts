@@ -22,17 +22,17 @@ export class ServiceCore {
   registerService(name: string) {
     //verification service is Repeat
     if (name === this.serviceName) {
-      throw new Error('The service has not changed!')
+      return console.log('The service has not changed!')
     }
+    const service = this.getService(name)
+    if (!service) return console.log('This service not is exist!')
+
     //cancellation service
     if (this.service) {
       this.service.destroy()
       this.service = null
     }
     //switch service
-    const service = this.getService(name)
-    // if (!service) throw new Error('This service not is exist!')
-    if (!service) return
 
     this.service = new service(this.paper)
     this.serviceName = service.namespace
