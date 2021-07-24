@@ -42,7 +42,7 @@ type EditorButtonProps = React.PropsWithChildren<{
   onClick?: () => void
 }>
 
-function EditorButton(props: EditorButtonProps) {
+export function EditorButton(props: EditorButtonProps) {
   const { style, children, onClick } = props
   return (
     <div className="hover1" onClick={onClick} style={{

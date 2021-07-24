@@ -1,5 +1,5 @@
-import ImageClassify from './ImageClassify'
-import MnistTrain from './MnistTrain'
+// import ImageClassify from './ImageClassify'
+// import MnistTrain from './MnistTrain'
 import TestTensor from './TestTensor'
 
 export default function Tensorflowd() {

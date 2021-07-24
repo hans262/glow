@@ -7,17 +7,19 @@ import Left from './Left';
 import Right from './Right';
 import { connect } from 'react-redux'
 import { RootState } from '../store';
+import { papersub } from './subject';
 
 interface ViewGraphicProps {
   height: number | string
-  plane?: RootState['plane']
+  plane: RootState['plane']
 }
 
 class ViewGraphic extends PureComponent<ViewGraphicProps> {
   ref = createRef<HTMLDivElement>()
   paper: paper.PaperScope
   serviceCore: ServiceCore
-  resizePaperSub: Subscription | null = null
+  resizePaperSub?: Subscription
+  paperSub?: Subscription
 
   constructor(props: ViewGraphicProps) {
     super(props)
@@ -27,6 +29,7 @@ class ViewGraphic extends PureComponent<ViewGraphicProps> {
 
   componentWillUnmount() {
     this.resizePaperSub?.unsubscribe()
+    this.paperSub?.unsubscribe()
   }
 
   componentDidMount() {
@@ -49,12 +52,16 @@ class ViewGraphic extends PureComponent<ViewGraphicProps> {
     this.resizePaperSub = observable.subscribe(e => {
       this.paper.view.viewSize = new this.paper.Size(e.width, e.height)
     })
-    console.log(this.paper.project)
+    // console.log(this.paper.project)
+
+    this.paperSub = papersub.subscribe(e => {
+      console.log(this.paper.project?.activeLayer.getItems({}))
+    })
   }
 
   componentDidUpdate() {
     if (!this.serviceCore) return
-    this.serviceCore.registerService(this.props.plane?.editorType!)
+    this.serviceCore.registerService(this.props.plane.editorType)
   }
 
   render() {

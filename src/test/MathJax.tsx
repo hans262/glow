@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 
 export default function MathJaxCFn() {
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -7,7 +7,6 @@ export default function MathJaxCFn() {
 
   const onRenderClick = () => {
     const MathJax = window.MathJax
-    // console.log(MathJax)
     let input = inputRef.current?.value?.trim()
     let output = outputRef.current!
     let options = MathJax.getMetricsFor(output)
@@ -19,13 +18,25 @@ export default function MathJaxCFn() {
     }).catch(function (err: any) {
       console.log(err.message)
     }).then(function () {
-      // button.disabled = display.disabled = false;
+      // e.target?.disabled = display.disabled = false;
     })
   }
 
   const onClearClick = () => {
     outputRef.current!.innerHTML = ''
   }
+
+  useEffect(() => {
+    if (document.getElementById('MathJax-script')) return
+    let script = document.createElement('script')
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
+    script.id = "MathJax-script"
+    script.async = true
+    document.getElementsByTagName('body')[0].appendChild(script)
+    script.onload = () => {
+      console.log(window.MathJax)
+    }
+  }, [])
 
   return (
     <div style={{ padding: 10 }}>
