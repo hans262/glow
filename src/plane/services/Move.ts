@@ -43,6 +43,7 @@ export class Move implements Service {
       this.path.position = this.path.position!.add(delta)
     }
   }
+  
   onMouseDown = (event: any) => {
     this.path = this.segment = null
     const { point } = event

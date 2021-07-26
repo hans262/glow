@@ -1,8 +1,5 @@
 import { Service } from ".";
 
-// import store from "../../store";
-// import { addPath } from "../../store/paper/actions";
-
 export class Draw implements Service {
   static namespace = 'draw'
   path: paper.Path | null = null
@@ -18,7 +15,7 @@ export class Draw implements Service {
     this.path.closed = true
     this.path.simplify()
     // this.path.smooth()
-    // store.dispatch(addPath(this.path))
+    this.paper.view.emit('created', { type: this.path.className, payload: this.path })
   }
   onMouseDrag = (e: any) => {
     if (!this.path) return

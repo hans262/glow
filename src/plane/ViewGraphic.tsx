@@ -7,14 +7,19 @@ import Left from './Left';
 import Right from './Right';
 import { connect } from 'react-redux'
 import { RootState } from '../store';
-import { papersub } from './subject';
+import { ACTION, ActionType, papersub } from './subject';
+import { Item } from './types';
 
 interface ViewGraphicProps {
   height: number | string
   plane: RootState['plane']
 }
 
-class ViewGraphic extends PureComponent<ViewGraphicProps> {
+interface ViewGraphicState {
+  layers: Item[]
+}
+
+class ViewGraphic extends PureComponent<ViewGraphicProps, ViewGraphicState> {
   ref = createRef<HTMLDivElement>()
   paper: paper.PaperScope
   serviceCore: ServiceCore
@@ -25,11 +30,15 @@ class ViewGraphic extends PureComponent<ViewGraphicProps> {
     super(props)
     this.paper = new paper.PaperScope()
     this.serviceCore = new ServiceCore(this.paper)
+    this.state = {
+      layers: []
+    }
   }
 
   componentWillUnmount() {
     this.resizePaperSub?.unsubscribe()
     this.paperSub?.unsubscribe()
+    this.paper.view.off('created', this.onCreated)
   }
 
   componentDidMount() {
@@ -37,11 +46,11 @@ class ViewGraphic extends PureComponent<ViewGraphicProps> {
     if (!ref) return
     const canvas = document.createElement('canvas')
     ref.appendChild(canvas)
-
     this.paper.setup(canvas)
     this.serviceCore.registerService('draw')
 
     const size = ref.getBoundingClientRect()
+
     this.paper.view.viewSize = new this.paper.Size(
       size.width, size.height
     )
@@ -49,19 +58,51 @@ class ViewGraphic extends PureComponent<ViewGraphicProps> {
       debounceTime(300),
       map(() => ref.getBoundingClientRect())
     )
+
     this.resizePaperSub = observable.subscribe(e => {
       this.paper.view.viewSize = new this.paper.Size(e.width, e.height)
     })
-    // console.log(this.paper.project)
 
-    this.paperSub = papersub.subscribe(e => {
-      console.log(this.paper.project?.activeLayer.getItems({}))
-    })
+    this.paperSub = papersub.subscribe(this.onSubscribe)
+
+    this.paper.view.on('created', this.onCreated)
   }
 
-  componentDidUpdate() {
-    if (!this.serviceCore) return
-    this.serviceCore.registerService(this.props.plane.editorType)
+  onSubscribe = (e: ActionType) => {
+    switch (e.type) {
+      case ACTION.VISIBLE_ITEM:
+        if (e.payload.className === 'Layer') {
+          let layer = this.paper.project?.layers.find(l => l.id === e.payload.id)!
+          layer.visible = e.payload.visible
+        } else {
+          let item = this.paper.project?.getItem({
+            className: e.payload.className,
+            id: e.payload.id
+          })!
+          item.visible = e.payload.visible
+        }
+        return
+      default:
+        return
+    }
+  }
+
+  onCreated = (_: { type: string, payload: paper.Item }) => {
+    let layers: Item[] = this.paper.project!.layers.map(l => ({
+      visible: l.visible!,
+      id: l.id,
+      className: l.className!,
+      children: l.children!.map(i => ({
+        id: i.id, className: i.className!, visible: i.visible!
+      }))
+    }))
+    this.setState(e => ({ ...e, layers }))
+  }
+
+  componentDidUpdate(prevProps: ViewGraphicProps) {
+    if (prevProps.plane.editorType !== this.props.plane.editorType) {
+      this.serviceCore.registerService(this.props.plane.editorType)
+    }
   }
 
   render() {
@@ -70,10 +111,13 @@ class ViewGraphic extends PureComponent<ViewGraphicProps> {
       <div style={{ height, display: 'flex' }}>
         <Left width={200} />
         <div
-          style={{ width: 'calc(100% - 400px)', border: '1px solid' }}
+          style={{
+            width: 'calc(100% - 400px)',
+            overflow: 'hidden', border: '1px solid'
+          }}
           ref={this.ref}
-        />
-        <Right width={200} />
+        ></div>
+        <Right width={200} layers={this.state.layers} />
       </div>
     )
   }
