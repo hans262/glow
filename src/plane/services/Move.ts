@@ -41,9 +41,14 @@ export class Move implements Service {
       this.path!.smooth()
     } else if (this.path) {
       this.path.position = this.path.position!.add(delta)
+    } else {
+      // this.paper.view.center = this.paper.view.center.subtract(delta)
+      // this.paper.view.transform(delta)
+      // console.log(event)
+      // this.paper.view.projectToView(event.point)
     }
   }
-  
+
   onMouseDown = (event: any) => {
     this.path = this.segment = null
     const { point } = event
