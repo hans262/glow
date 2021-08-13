@@ -26,13 +26,16 @@ export class Union implements Service {
       this.path.position = this.path.position!.add(delta)
     }
   }
+
   onMouseDown = (event: any) => {
     const { point } = event
     const hitResult = this.paper.project!.hitTest(point, this.hitOptions) || {}
     const { item } = hitResult
-    this.path = item as paper.Path | null
-    console.log(this.path)
+    if(!item) return
+    this.path = item as paper.Path
+    this.path.selected= true
   }
+  
   destroy(): void {
     this.paper.view.off('mousemove', this.onMouseMove)
     this.paper.view.off('mousedrag', this.onMouseDrag)

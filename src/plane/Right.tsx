@@ -11,7 +11,7 @@ interface RightProps {
 export default function Right(props: RightProps) {
   const { width, layers } = props
   return (
-    <div style={{ width, padding: 10 }}>
+    <div style={{ width, padding: 10, overflowY: 'scroll' }}>
       <div style={{ ...title1 }}>Layers:</div>
       {layers.map(l => <LayerView layer={l} key={l.id} />)}
     </div>
@@ -22,7 +22,7 @@ export const LayerView: React.FC<{ layer: Item }> = ({ layer }) => {
   const onVisibleChange = (e: { visible: boolean, className: string, id: number }) => {
     papersub.next({ type: ACTION.VISIBLE_ITEM, payload: e })
   }
-  
+
   return <>
     <div style={{
       display: 'flex', cursor: 'pointer',

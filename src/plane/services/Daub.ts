@@ -1,8 +1,5 @@
 import { Service } from ".";
 
-// import store from "../../store";
-// import { addPath, removePath } from "../../store/paper/actions";
-
 export class Daub implements Service {
   static namespace = 'daub'
   oldPath: paper.Path | null = null
@@ -24,19 +21,18 @@ export class Daub implements Service {
     this.paper.view.on('mousemove', this.onMouseMove)
     this.paper.view.on('mousedrag', this.onMouseDrag)
   }
+  
   onMouseUp = (event: any) => {
     //保存path
     if (this.oldPath && this.newPath) {
-      //删除老的 
-      // store.dispatch(removePath(this.oldPath.id))
-      //保存新的
-      // store.dispatch(addPath(this.newPath))
       this.oldPath = this.newPath = null
     }
   }
+
   onMouseMove = (event: any) => {
     this.circle.position = event.point
   }
+
   onMouseDrag = (event: any) => {
     const { point } = event
     this.circle.position = point

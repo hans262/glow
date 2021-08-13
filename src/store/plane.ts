@@ -2,12 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface Plane {
   editorType: string
-  paths: any[]
+  styles: {
+    borderColor: string
+  }
 }
 
 const initialState = {
   editorType: 'draw',
-  paths: []
+  styles: {
+    borderColor: 'red'
+  }
 } as Plane
 
 export const planeSlice = createSlice({

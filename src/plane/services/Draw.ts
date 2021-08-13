@@ -1,3 +1,4 @@
+import { message } from "antd";
 import { Service } from ".";
 
 export class Draw implements Service {
@@ -12,6 +13,12 @@ export class Draw implements Service {
   }
   onMouseUp = (e: any) => {
     if (!this.path || !this.start) return
+    if (this.path.length < 50) {
+      message.warning('路径长度不能低于' + 50)
+      this.path.remove()
+      this.path = null
+      return
+    }
     this.path.closed = true
     this.path.simplify()
     // this.path.smooth()

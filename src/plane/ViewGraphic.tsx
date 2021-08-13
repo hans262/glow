@@ -106,14 +106,15 @@ class ViewGraphic extends PureComponent<ViewGraphicProps, ViewGraphicState> {
   }
 
   render() {
-    const { height } = this.props
+    const { height, plane } = this.props
     return (
       <div style={{ height, display: 'flex' }}>
         <Left width={200} />
         <div
           style={{
-            width: 'calc(100% - 400px)',
-            overflow: 'hidden', border: '1px solid'
+            width: 'calc(100% - 400px)', overflow: 'hidden',
+            borderRight: `1px dashed ${plane.styles.borderColor}`,
+            borderLeft: `1px dashed ${plane.styles.borderColor}`
           }}
           ref={this.ref}
         ></div>
