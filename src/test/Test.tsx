@@ -1,31 +1,25 @@
-import { ResizeBox } from "../components/ResizeBox";
-import bg from '../common/abc.jpeg'
-import { BgCover } from "../components/BgCover";
-import { useState } from "react";
-import { FlowBox } from '../components/FlowBox'
+// import Hooks from "../react/Hooks";
+// import Memo from "../react/Memo";
+// import UseMemo from "../react/UseMemo";
+// import UseCallback from "../react/UseCallback";
+// import CodeSplitting from "../react/CodeSplitting";
+// import MySwiper from "../common/MySwiper";
+// import UseImperativeHandle from "../react/UseImperativeHandle";
+
+import AMap from "../components/AMap"
+// import useDocumentTitle from "../hooks/useDocumentTitle"
+
+// import { TextFoldBox } from "../components/FoldBox";
+// import { TeztLazyImage } from "../components/LazyImage";
 
 export default function Test() {
-  const [list, setList] = useState(new Array(10).fill(1))
-
-  const onScrollBottom = () => {
-    console.log('到底了')
-    setList(e => [...e, ...new Array(10).fill(1)])
-  }
-
   return (
-    <div style={{
-      margin: '0 100px',
-      border: '1px solid',
-    }}>
-      <FlowBox style={{ padding: 10 }} height={600} onScrollBottom={onScrollBottom}>
-        {list.map((v, key) => <ResizeBox key={key} height={'50%'} style={{
-          borderRadius: 8, overflow: 'hidden', marginBottom: 10
-        }}>
-          <BgCover src={bg} style={{ height: '100%' }}>
-            {key}
-          </BgCover>
-        </ResizeBox>)}
-      </FlowBox>
-    </div>
+    <>
+      <div style={{
+        margin: '100px 100px 0',
+      }}>
+        <AMap/>
+      </div>
+    </>
   )
 }

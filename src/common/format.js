@@ -4,8 +4,8 @@
  * 连接符可自定义： new Date().format('yyyy/MM/dd HH:mm:ss')
  * 格式化长度可自定义： new Date().format('yyyy-MM-dd') 或 new Date().format('HH:mm')
  */
-const format = function (date,fmt) {
-  let d=new Date(date)
+const format = function (date, fmt) {
+  let d = new Date(date)
   let o = {
     "M+": d.getMonth() + 1, //月份
     "d+": d.getDate(), //日

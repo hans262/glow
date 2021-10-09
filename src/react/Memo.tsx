@@ -10,27 +10,6 @@ import { Button, Switch } from 'antd'
  * 函数组件使用React.memo包裹，或者类组件shouldComponentUpdate声明周期
  */
 
-interface MySwitchProps {
-	open: boolean
-}
-
-function MySwitch(props: MySwitchProps) {
-	console.log('下层组件渲染了')
-	return (
-		<Switch checked={props.open} />
-	)
-}
-
-function areEqual(prevProps: MySwitchProps, nextProps: MySwitchProps) {
-	if (prevProps.open === nextProps.open) {
-		return true
-	} else {
-		return false
-	}
-}
-
-const MySwitchMemo = memo(MySwitch, areEqual)
-
 export default function Memo() {
 	const [open, setOpen] = useState(true)
 	const [date, setDate] = useState(new Date())
@@ -53,3 +32,18 @@ export default function Memo() {
 		</div>
 	)
 }
+
+const MySwitchMemo = memo<{
+	open: boolean
+}>(props => {
+	console.log('下层组件渲染了')
+	return (
+		<Switch checked={props.open} />
+	)
+}, (prevProps, nextProps) => {
+	if (prevProps.open === nextProps.open) {
+		return true
+	} else {
+		return false
+	}
+})

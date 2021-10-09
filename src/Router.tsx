@@ -14,7 +14,7 @@ const Game = lazy(() => import('./game'))
 const DuckShooter = lazy(() => import('./duckshooter'))
 const G6Graphic = lazy(() => import('./g6'))
 const Plane = lazy(() => import('./plane'))
-const IconView = lazy(() => import('./icon'))
+const IconView = lazy(() => import('./components/Icon'))
 const MathJax = lazy(() => import('./test/MathJax'))
 
 export default function Router() {

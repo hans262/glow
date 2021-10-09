@@ -7,23 +7,46 @@ import { useEffect, useRef, useState } from "react"
 export const FoldBox: React.FC<{
   visible: boolean
 }> = ({ visible, children }) => {
-  const [boxHeight, setBoxHeight] = useState(0)
+  const [state, setState] = useState({
+    contentHeight: 0,
+    overflow: 'hidden' as React.CSSProperties['overflow']
+  })
   const ref = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    const height = ref.current?.getBoundingClientRect().height ?? 0
     if (visible) {
-      setBoxHeight(height)
+      const contentHeight = ref.current?.getBoundingClientRect().height ?? 0
+      setState(e => ({ ...e, contentHeight, abc: true }))
+      setTimeout(() => {
+        setState(e => ({
+          ...e, overflow: contentHeight > 0 ? "visible" : "hidden"
+        }))
+      }, 300)
     } else {
-      setBoxHeight(0)
+      setState(e => ({ ...e, contentHeight: 0, overflow: 'hidden' }))
     }
   }, [visible])
+
   return (
     <div style={{
-      overflow: 'hidden',
+      overflow: state.overflow,
       transition: 'height 0.3s ease-in-out',
-      height: boxHeight
+      height: state.contentHeight
     }}>
       <div ref={ref}>{children}</div>
     </div >
   )
+}
+
+export const TextFoldBox = () => {
+  const [visible, setVisible] = useState(false)
+  return <>
+    <button onClick={() => setVisible(e => !e)}>展开</button>
+    <FoldBox visible={visible}>
+      <div style={{
+        height: 300, background: '#000',
+        boxShadow: '1px 1px 12px red'
+      }}></div>
+    </FoldBox>
+  </>
 }
