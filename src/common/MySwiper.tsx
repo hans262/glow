@@ -4,8 +4,8 @@ import "swiper/swiper.min.css"
 import "swiper/components/pagination/pagination.min.css"
 import "swiper/components/lazy/lazy.min.css"
 
-import SwiperCore, { Lazy, Pagination, Navigation } from 'swiper';
-SwiperCore.use([Lazy, Pagination, Navigation]);
+import SwiperCore, { Zoom, Lazy, Pagination, Navigation } from 'swiper';
+SwiperCore.use([Zoom, Pagination, Navigation, Lazy]);
 
 const images = [
   'https://swiperjs.com/demos/images/nature-1.jpg',
@@ -29,11 +29,12 @@ export default function MySwiper() {
       pagination={{ clickable: true }}
       navigation={true}
       loop={true}
+      zoom={true}
     >
       {images.map((s, k) =>
-        <SwiperSlide key={k} style={{
-          background: '#000'
-        }}>
+        <SwiperSlide key={k}
+          className="swiper-zoom-container"
+          style={{ background: '#000' }}>
           <img
             alt=""
             data-src={s}

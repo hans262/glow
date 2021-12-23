@@ -1,6 +1,7 @@
+import { Button } from "antd"
 import { useMemo, useState } from "react"
 
-const UseMemo: React.FC<{}> = () => {
+export default function UseMemo() {
   const [count, setCount] = useState(0)
   const [price, setPrice] = useState(5)
 
@@ -15,13 +16,12 @@ const UseMemo: React.FC<{}> = () => {
 
   return (
     <>
+      <h1>React: useMemo</h1>
       <div>count: {count}</div>
       <div>price: {price}</div>
-      <div>memo化的：{getPrice()}</div>
-      <button onClick={() => setCount(c => c + 1)}>count</button>
-      <button onClick={() => setPrice(p => p + 1)}>price</button>
+      <div>memo化的price：{getPrice()}</div>
+      <Button onClick={() => setCount(c => c + 1)}>count++</Button>
+      <Button onClick={() => setPrice(p => p + 1)}>price++</Button>
     </>
   )
 }
-
-export default UseMemo

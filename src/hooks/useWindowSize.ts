@@ -18,17 +18,22 @@ function getSize(): WindowSize {
   }
 }
 
-export default function useWindowSize(): WindowSize {
-  let [windowSize, setWindowSize] = useState(getSize())
+/**
+ * 实时获取window尺寸 可截流
+ * @param dueTime 延迟毫秒
+ * @returns WindowSize
+ */
+export default function useWindowSize(dueTime: number) {
+  const [windowSize, setWindowSize] = useState(getSize())
   useEffect(() => {
     const observable = fromEvent(window, 'resize').pipe(
-      debounceTime(300),
-      map(e => getSize())
+      debounceTime(dueTime),
+      map(_ => getSize())
     )
     const subscription = observable.subscribe(v => setWindowSize(v))
     return () => {
       subscription.unsubscribe()
     }
-  }, [])
-  return windowSize;
+  }, [dueTime])
+  return windowSize
 }
