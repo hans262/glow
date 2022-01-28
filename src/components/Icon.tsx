@@ -1,5 +1,13 @@
-export function AccountCircle(props: IconProps) {
-  const { style, size = 24, color } = props
+
+export interface IconProps {
+  style?: React.CSSProperties
+  size?: number
+  color?: string
+}
+
+export const AccountCircle: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,8 +22,9 @@ export function AccountCircle(props: IconProps) {
   )
 }
 
-export function BrightnessAuto(props: IconProps) {
-  const { style, size = 24, color } = props
+export const BrightnessAuto: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -29,8 +38,9 @@ export function BrightnessAuto(props: IconProps) {
   )
 }
 
-export function BrightnessHigh(props: IconProps) {
-  const { style, size = 24, color } = props
+export const BrightnessHigh: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -45,8 +55,9 @@ export function BrightnessHigh(props: IconProps) {
   )
 }
 
-export function BugReport(props: IconProps) {
-  const { style, size = 24, color } = props
+export const BugReport: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -60,8 +71,9 @@ export function BugReport(props: IconProps) {
   )
 }
 
-export function Cancel(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Cancel: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -75,8 +87,9 @@ export function Cancel(props: IconProps) {
   )
 }
 
-export function Chat(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Chat: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -90,8 +103,9 @@ export function Chat(props: IconProps) {
   )
 }
 
-export function ControlCamera(props: IconProps) {
-  const { style, size = 24, color } = props
+export const ControlCamera: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -106,8 +120,9 @@ export function ControlCamera(props: IconProps) {
   )
 }
 
-export function Email(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Email: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -121,8 +136,9 @@ export function Email(props: IconProps) {
   )
 }
 
-export function Error(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Error: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -136,8 +152,9 @@ export function Error(props: IconProps) {
   )
 }
 
-export function ErrorOutline(props: IconProps) {
-  const { style, size = 24, color } = props
+export const ErrorOutline: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -151,8 +168,9 @@ export function ErrorOutline(props: IconProps) {
   )
 }
 
-export function ExitToApp(props: IconProps) {
-  const { style, size = 24, color } = props
+export const ExitToApp: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -166,8 +184,9 @@ export function ExitToApp(props: IconProps) {
   )
 }
 
-export function ExploreOff(props: IconProps) {
-  const { style, size = 24, color } = props
+export const ExploreOff: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -181,8 +200,9 @@ export function ExploreOff(props: IconProps) {
   )
 }
 
-export function Help(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Help: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -196,8 +216,9 @@ export function Help(props: IconProps) {
   )
 }
 
-export function Input(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Input: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -214,8 +235,9 @@ export function Input(props: IconProps) {
   )
 }
 
-export function Stars(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Stars: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -229,8 +251,9 @@ export function Stars(props: IconProps) {
   )
 }
 
-export function SettingsApplications(props: IconProps) {
-  const { style, size = 24, color } = props
+export const SettingsApplications: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -244,8 +267,9 @@ export function SettingsApplications(props: IconProps) {
   )
 }
 
-export function Settings(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Settings: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -259,8 +283,9 @@ export function Settings(props: IconProps) {
   )
 }
 
-export function SentimentSatisfied(props: IconProps) {
-  const { style, size = 24, color } = props
+export const SentimentSatisfied: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -276,8 +301,9 @@ export function SentimentSatisfied(props: IconProps) {
   )
 }
 
-export function ScreenLockPortrait(props: IconProps) {
-  const { style, size = 24, color } = props
+export const ScreenLockPortrait: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -291,8 +317,9 @@ export function ScreenLockPortrait(props: IconProps) {
   )
 }
 
-export function PanTool(props: IconProps) {
-  const { style, size = 24, color } = props
+export const PanTool: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -306,8 +333,9 @@ export function PanTool(props: IconProps) {
   )
 }
 
-export function Notifications(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Notifications: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -321,8 +349,9 @@ export function Notifications(props: IconProps) {
   )
 }
 
-export function Menu(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Menu: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -336,8 +365,9 @@ export function Menu(props: IconProps) {
   )
 }
 
-export function ListAlt(props: IconProps) {
-  const { style, size = 24, color } = props
+export const ListAlt: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -351,8 +381,9 @@ export function ListAlt(props: IconProps) {
   )
 }
 
-export function Language(props: IconProps) {
-  const { style, size = 24, color } = props
+export const Language: React.FC<IconProps> = ({
+  style, size = 24, color
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -368,37 +399,31 @@ export function Language(props: IconProps) {
 
 export default function IconView() {
   return (
-    <div style={{ padding: 20 }}>
-      <AccountCircle size={50} style={{ marginRight: 10 }} />
-      <BrightnessAuto size={50} style={{ marginRight: 10 }} />
-      <BrightnessHigh size={50} style={{ marginRight: 10 }} />
-      <BugReport size={50} style={{ marginRight: 10 }} />
-      <Cancel size={50} style={{ marginRight: 10 }} />
-      <Chat size={50} style={{ marginRight: 10 }} />
-      <ControlCamera size={50} style={{ marginRight: 10 }} />
-      <Email size={50} style={{ marginRight: 10 }} />
-      <Error size={50} style={{ marginRight: 10 }} />
-      <ErrorOutline size={50} style={{ marginRight: 10 }} />
-      <ExitToApp size={50} style={{ marginRight: 10 }} />
-      <ExploreOff size={50} style={{ marginRight: 10 }} />
-      <Help size={50} style={{ marginRight: 10 }} />
-      <Input size={50} style={{ marginRight: 10 }} />
-      <Language size={50} style={{ marginRight: 10 }} />
-      <ListAlt size={50} style={{ marginRight: 10 }} />
-      <Menu size={50} style={{ marginRight: 10 }} />
-      <Notifications size={50} style={{ marginRight: 10 }} />
-      <PanTool size={50} style={{ marginRight: 10 }} />
-      <ScreenLockPortrait size={50} style={{ marginRight: 10 }} />
-      <SentimentSatisfied size={50} style={{ marginRight: 10 }} />
-      <Settings size={50} style={{ marginRight: 10 }} />
-      <SettingsApplications size={50} style={{ marginRight: 10 }} />
-      <Stars size={50} style={{ marginRight: 10 }} />
+    <div className="flex p-3 space-x-2 flex-wrap">
+      <AccountCircle size={50} />
+      <BrightnessAuto size={50} />
+      <BrightnessHigh size={50} />
+      <BugReport size={50} />
+      <Cancel size={50} />
+      <Chat size={50} />
+      <ControlCamera size={50} />
+      <Email size={50} />
+      <Error size={50} />
+      <ErrorOutline size={50} />
+      <ExitToApp size={50} />
+      <ExploreOff size={50} />
+      <Help size={50} />
+      <Input size={50} />
+      <Language size={50} />
+      <ListAlt size={50} />
+      <Menu size={50} />
+      <Notifications size={50} />
+      <PanTool size={50} />
+      <ScreenLockPortrait size={50} />
+      <SentimentSatisfied size={50} />
+      <Settings size={50} />
+      <SettingsApplications size={50} />
+      <Stars size={50} />
     </div>
   )
-}
-
-export interface IconProps {
-  style?: React.CSSProperties
-  size?: number
-  color?: string
 }

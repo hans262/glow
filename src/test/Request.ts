@@ -2,7 +2,7 @@ interface Request {
 	type?: 'GET' | 'POST'
 	headers?: { [key: string]: string }
 	params?: { [key: string]: string }
-	body?: Document | BodyInit | null
+	body?: any
 	timeout?: number
 	getXhr?: (xhr: XMLHttpRequest) => void
 	responseType?: XMLHttpRequestResponseType
