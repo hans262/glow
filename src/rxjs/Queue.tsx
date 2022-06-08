@@ -1,9 +1,9 @@
 import { useRef, useEffect, useState } from 'react'
 import { interval, Subject } from 'rxjs';
 import { map, concatMap, take } from 'rxjs/operators';
+import { Button } from '../components/Button';
 
 export default function Queue() {
-  const source = useRef<HTMLButtonElement>(null)
   const content = useRef<HTMLDivElement>(null)
   const subject = useRef<Subject<number>>(new Subject())
   const [nums, setNums] = useState<number[]>([])
@@ -29,11 +29,11 @@ export default function Queue() {
   }, [])
 
   return (
-    <div style={{ margin: 10, overflow: 'hiden' }}>
-      <h1>RxJs 队列实现</h1>
-      <button ref={source} onClick={click}>source</button>
+    <div className='m-2'>
+      <div className="text-5xl subpixel-antialiased">RxJs 队列实现</div>
+      <Button onClick={click}>click</Button>
       <div style={{ height: 100, position: 'relative' }} ref={content}></div>
-      <div>{nums.map((n, key) => <span key={key} style={{ margin: '0 5px' }}>{n}</span>)}</div>
+      <div>{nums.map((n, key) => <span key={key} className='mx-2'>{n}</span>)}</div>
     </div>
   )
 }

@@ -3,7 +3,8 @@ import { classNames } from '../common/classNames'
 
 export const Button: React.FC<{
   className?: string
-}> = ({ children, className }) => {
+  onClick?: () => void
+}> = ({ children, className, onClick }) => {
   return (
     <button
       className={classNames(
@@ -13,6 +14,7 @@ export const Button: React.FC<{
         'bg-green-600 hover:shadow-md rounded-md',
         className
       )}
+      onClick={onClick}
     >
       {children}
     </button>
