@@ -23,7 +23,7 @@ export const FoldBox: React.FC<{
         setState(e => ({
           ...e, overflow: contentHeight > 0 ? "visible" : "hidden",
         }))
-      }, 1000)
+      }, 300)
     } else {
       setState(e => ({ ...e, contentHeight: 0, overflow: 'hidden' }))
     }
@@ -32,7 +32,7 @@ export const FoldBox: React.FC<{
   return (
     <div style={{
       overflow: state.overflow,
-      transition: 'all 1s ease-in-out',
+      transition: 'all .3s ease-in-out',
       height: state.contentHeight
     }}>
       <div ref={ref}>{children}</div>
