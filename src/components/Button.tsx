@@ -1,9 +1,9 @@
-import React from 'react'
 import { classNames } from '../common/classNames'
 
 export const Button: React.FC<{
   className?: string
   onClick?: () => void
+  children: React.ReactNode
 }> = ({ children, className, onClick }) => {
   return (
     <button

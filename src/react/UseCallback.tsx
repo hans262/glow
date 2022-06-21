@@ -10,7 +10,7 @@ import React, { useCallback, useState } from "react"
 export default function UseCallback() {
   const [text, setText] = useState('')
 
-  const handleOnChange = useCallback((e) => {
+  const handleOnChange = useCallback((e: any) => {
     setText(e.target.value)
   }, [])
 

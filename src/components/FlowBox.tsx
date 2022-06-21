@@ -1,3 +1,4 @@
+import React from "react"
 
 /**
  * 一种流式加载盒子
@@ -6,6 +7,7 @@ export const FlowBox: React.FC<{
   height: string | number
   style?: React.CSSProperties
   onScrollBottom?: () => void
+  children: React.ReactNode
 }> = ({ children, style, height, onScrollBottom }) => {
   const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     const div = e.target as HTMLDivElement

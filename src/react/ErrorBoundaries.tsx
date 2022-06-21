@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 
 /**
  * Error Boundaries
@@ -21,7 +21,9 @@ function Test(props: any) {
   )
 }
 
-class ErrorBoundary extends Component {
+class ErrorBoundary extends Component<{
+  children: React.ReactNode
+}> {
   state = { hasError: false, error: new Error() }
 
   static getDerivedStateFromError(error: any) {

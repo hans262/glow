@@ -6,10 +6,10 @@ export interface Music {
   pending: boolean
 }
 
-const initialState = {
+const initialState: Music = {
   pending: false,
   data: []
-} as Music
+}
 
 export const musicSlice = createSlice({
   name: 'music',

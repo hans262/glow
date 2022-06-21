@@ -1,8 +1,10 @@
 import { classNames } from "../common/classNames"
 import { Link as LinkRouter } from 'react-router-dom'
+import React from "react"
 
 export const Link: React.FC<{
   href: string
+  children: React.ReactNode
 }> = ({ children, href }) => {
   return (
     <LinkRouter className={classNames(

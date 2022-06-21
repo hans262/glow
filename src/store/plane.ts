@@ -7,12 +7,12 @@ export interface Plane {
   }
 }
 
-const initialState = {
+const initialState:Plane = {
   editorType: 'draw',
   styles: {
     borderColor: 'red'
   }
-} as Plane
+}
 
 export const planeSlice = createSlice({
   name: 'plane',

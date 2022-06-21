@@ -1,3 +1,4 @@
+import React from "react"
 
 /**
  * 高度相对于宽度的盒子
@@ -6,6 +7,7 @@
 export const ResizeBox: React.FC<{
   height?: number | string,
   style?: React.CSSProperties
+  children: React.ReactNode
 }> = ({ children, height, style }) => {
   const { height: sth = '100%', ...rest } = style ?? {}
   return <div
