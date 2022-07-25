@@ -2,6 +2,7 @@
   "name": "glow",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://myusername.github.io/glow",
   "dependencies": {
     "@antv/g2": "^4.2.5",
     "@antv/g6": "^4.6.15",
