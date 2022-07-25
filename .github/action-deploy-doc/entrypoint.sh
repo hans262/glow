@@ -68,6 +68,7 @@ git checkout "${BASE_BRANCH:-main}" && \
 # Builds the project if a build script is provided.
 echo "Running build scripts... $BUILD_SCRIPT" && \
 eval "$BUILD_SCRIPT" && \
+cp build/index.html build/404.html && \
 
 # Commits the data to Github.
 echo "Deploying to GitHub..." && \
