@@ -1,12 +1,13 @@
 import { classNames } from "../common/classNames"
 
-export const Input: React.FC<{
-  placeholder?: string
-  className?: string
-}> = ({ placeholder, className }) => {
+interface IInput extends React.InputHTMLAttributes<HTMLInputElement> { }
+
+export const Input: React.FC<IInput> = ({
+  className, ...nest
+}) => {
   return (
     <input
-      placeholder={placeholder}
+      {...nest}
       className={classNames(
         'px-4 py-2 text-green-800 bg-transparent rounded-md ',
         'outline-none focus:shadow-lg',
