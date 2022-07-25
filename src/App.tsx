@@ -19,7 +19,7 @@ const Peer = lazy(() => import('./test/Peer'))
 export default function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename='glow'>
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path={"/"} element={<Test />} />
