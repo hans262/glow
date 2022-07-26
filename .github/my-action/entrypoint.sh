@@ -63,19 +63,22 @@ fi
 # 切换到主分支
 git checkout $BASE_BRANCH && \
 
-# 执行编译脚本
-echo "Running build scripts... $BUILD_SCRIPT" && \
-eval "$BUILD_SCRIPT" && \
-
-# gh-page 不支持history路由的应对策略
-cp build/index.html build/404.html && \
-
-# 提交到git
-echo "Deploying to GitHub..." && \
-git add -f $FOLDER && \
-git commit -m "Deploying to ${BRANCH} from $BASE_BRANCH ${GITHUB_SHA}" --quiet && \
-
-# 获取文件夹的hash值，只提交文件夹到发布分支
-git push $REPOSITORY_PATH `git subtree split --prefix $FOLDER $BASE_BRANCH`:$BRANCH --force && \
-
+git branch -a && \
 echo "发布成功！"
+
+# # 执行编译脚本
+# echo "Running build scripts... $BUILD_SCRIPT" && \
+# eval "$BUILD_SCRIPT" && \
+
+# # gh-page 不支持history路由的应对策略
+# cp build/index.html build/404.html && \
+
+# # 提交到git
+# echo "Deploying to GitHub..." && \
+# git add -f $FOLDER && \
+# git commit -m "Deploying to ${BRANCH} from $BASE_BRANCH ${GITHUB_SHA}" --quiet && \
+
+# # 获取文件夹的hash值，只提交文件夹到发布分支
+# git push $REPOSITORY_PATH `git subtree split --prefix $FOLDER $BASE_BRANCH`:$BRANCH --force && \
+
+# echo "发布成功！"
