@@ -6,9 +6,9 @@ on:
 jobs:
   DOC-DEPLOY:
     runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@main
+    # steps:
+    # - name: Checkout
+    #   uses: actions/checkout@main
 
     - name: Run build
       uses: ./.github/my-action
