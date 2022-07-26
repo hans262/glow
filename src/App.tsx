@@ -10,16 +10,16 @@ const Redux = lazy(() => import('./redux'))
 const Rxjs = lazy(() => import('./rxjs'))
 const Game = lazy(() => import('./game'))
 const DuckShooter = lazy(() => import('./duckshooter'))
-const G6Graphic = lazy(() => import('./g6'))
 const IconView = lazy(() => import('./components/Icon'))
 const MathJax = lazy(() => import('./test/MathJax'))
 const Mysql = lazy(() => import('./mysql'))
 const Peer = lazy(() => import('./test/Peer'))
 
 export default function App() {
+
   return (
     <Provider store={store}>
-      <BrowserRouter basename='glow'>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path={"/"} element={<Test />} />
@@ -28,7 +28,6 @@ export default function App() {
             <Route path="/rxjs/*" element={<Rxjs />} />
             <Route path="/game" element={<Game />} />
             <Route path="/duckshooter" element={<DuckShooter />} />
-            <Route path="/g6" element={<G6Graphic />} />
             <Route path="/icon" element={<IconView />} />
             <Route path="/mathjax" element={<MathJax />} />
             <Route path="/mysql" element={<Mysql />} />

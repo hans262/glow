@@ -1,4 +1,4 @@
-name: NICEST
+name: GLOW
 on:
   push:
     branches:

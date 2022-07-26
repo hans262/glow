@@ -2,10 +2,9 @@
   "name": "glow",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://myusername.github.io/glow",
+  "homepage": "https://ounana.github.io/glow",
   "dependencies": {
     "@antv/g2": "^4.2.5",
-    "@antv/g6": "^4.6.15",
     "@reduxjs/toolkit": "^1.8.2",
     "@tensorflow/tfjs": "^2.8.5",
     "@testing-library/jest-dom": "^5.16.4",
@@ -25,7 +24,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
-    "rxjs": "^6.6.3",
+    "rxjs": "^7.5.6",
     "swiper": "^6.5.3",
     "tailwindcss": "^3.1.6",
     "typescript": "^4.7.4",
@@ -33,7 +32,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "HTTPS=true SSL_CRT_FILE=localhost+2.pem SSL_KEY_FILE=localhost+2-key.pem react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
