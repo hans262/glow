@@ -1,9 +1,11 @@
 #!/bin/sh -l
-echo "开始工作"
+echo "开始测试"
+ls &&\
 git --version && \
 git status && \
-node -v && \
-npm -v && \
+git config --global user.email
+git config --global user.name
+echo $GITHUB_WORKSPACE
 
 set -e
 
@@ -33,6 +35,9 @@ esac
 # 安装git
 apt-get update && \
 apt-get install -y git && \
+
+echo "hhh"
+git --version && \
 
 # 进入工作区目录
 cd $GITHUB_WORKSPACE && \
