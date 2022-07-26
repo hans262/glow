@@ -10,11 +10,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name : Run scripts
-      run: |
-        git config --global user.email 771565119@qq.com
-        git config --global user.name hans
-
     - name: Build
       uses: ./.github/my-action
       env:
