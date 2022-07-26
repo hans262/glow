@@ -1,4 +1,9 @@
 #!/bin/sh -l
+echo "开始工作"
+git --version && \
+git status && \
+node -v && \
+npm -v && \
 
 set -e
 
