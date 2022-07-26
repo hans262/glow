@@ -14,7 +14,7 @@ const App = () => {
   const currentCall = useRef<any>();
   const currentConnection = useRef<any>();
 
-  const peer = useRef<any>()
+  const peer = useRef<Peer>()
 
   const localVideo = useRef<any>();
   const remoteVideo = useRef<any>();
@@ -54,10 +54,11 @@ const App = () => {
     })
 
     // 监听别人连我
-    peer.current.on('call', async (call: any) => {
+    peer.current.on('call', async (call) => {
       if (window.confirm(`是否接受 ${call.peer}?`)) {
+        debugger
         // 监听对方流，并更新到 remoteVideo 上
-        call.on('stream', (stream: any) => {
+        call.on('stream', (stream) => {
           remoteVideo.current.srcObject = stream;
           remoteVideo.current.play()
         })
@@ -74,7 +75,6 @@ const App = () => {
         } catch (error) {
           message.warning('没有本地摄像头')
         }
-
       } else {
         call.close()
         alert('已关闭')
@@ -98,14 +98,14 @@ const App = () => {
     localVideo.current.play()
 
     // 数据传输
-    const connection = peer.current.connect(remoteId);
+    const connection = peer.current!.connect(remoteId);
     currentConnection.current = connection
     connection.on('open', () => {
       message.info('已连接')
     })
 
     // 多媒体传输
-    const call = peer.current.call(remoteId, stream)
+    const call = peer.current!.call(remoteId, stream)
     call.on("stream", (stream: any) => {
       remoteVideo.current.srcObject = stream;
       remoteVideo.current.play()
