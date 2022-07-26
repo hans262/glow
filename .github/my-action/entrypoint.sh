@@ -1,11 +1,4 @@
 #!/bin/sh -l
-echo "开始测试"
-ls &&\
-git --version && \
-git status && \
-git config --global user.email
-git config --global user.name
-echo $GITHUB_WORKSPACE
 
 set -e
 
@@ -33,17 +26,14 @@ case "$FOLDER" in /*|./*)
 esac
 
 # 安装git
-apt-get update && \
-apt-get install -y git && \
-
-echo "hhh"
-git --version && \
+# apt-get update && \
+# apt-get install -y git && \
 
 # 进入工作区目录
 cd $GITHUB_WORKSPACE && \
 
 # 初始化git
-git init && \
+# git init && \
 git config --global user.email 771565119@qq.com && \
 git config --global user.name hans && \
 
