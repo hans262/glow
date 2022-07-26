@@ -11,9 +11,10 @@ jobs:
       uses: actions/checkout@main
 
     - name: Run build
-      uses: ./.github/action-deploy-doc
+      uses: ./.github/my-action
       env:
         ACCESS_TOKEN: ${{ secrets.MY_TOKEN }}
         BRANCH: gh-pages
         FOLDER: build
         BUILD_SCRIPT: npm install && npm run build
+        BASE_BRANCH: main
