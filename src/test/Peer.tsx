@@ -56,10 +56,16 @@ const App = () => {
     // 监听别人连我
     peer.current.on('call', async (call: any) => {
       if (window.confirm(`是否接受 ${call.peer}?`)) {
-        // 获取本地流
-        let stream;
+        // 监听对方流，并更新到 remoteVideo 上
+        call.on('stream', (stream: any) => {
+          remoteVideo.current.srcObject = stream;
+          remoteVideo.current.play()
+        })
+        currentCall.current = call
+
         try {
-          stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          // 获取本地流
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
           //播放本地流
           localVideo.current.srcObject = stream
           localVideo.current.play()
@@ -67,15 +73,8 @@ const App = () => {
           call.answer(stream)
         } catch (error) {
           message.warning('没有本地摄像头')
-
-        } finally {
-          // 监听对方流，并更新到 remoteVideo 上
-          call.on('stream', (stream: any) => {
-            remoteVideo.current.srcObject = stream;
-            remoteVideo.current.play()
-          })
-          currentCall.current = call
         }
+
       } else {
         call.close()
         alert('已关闭')
