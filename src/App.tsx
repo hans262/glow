@@ -16,7 +16,6 @@ const Mysql = lazy(() => import('./mysql'))
 const Peer = lazy(() => import('./test/Peer'))
 
 export default function App() {
-
   return (
     <Provider store={store}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>

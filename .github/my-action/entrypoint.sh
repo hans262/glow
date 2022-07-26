@@ -4,19 +4,19 @@ set -e
 
 if [ -z "$ACCESS_TOKEN" ]
 then
-  echo "必须设置仓库的ACCESS_TOKEN环境变量"
+  echo "请设置仓库的TOKEN环境变量"
   exit 1
 fi
 
 if [ -z "$BRANCH" ]
 then
-  echo "请设置发布到哪个分支"
+  echo "请设置发布分支"
   exit 1
 fi
 
 if [ -z "$FOLDER" ]
 then
-  echo "选择哪个文件夹进行发布"
+  echo "请设置资源文件夹"
   exit 1
 fi
 
@@ -33,7 +33,6 @@ esac
 cd $GITHUB_WORKSPACE && \
 
 # 初始化git
-# git init && \
 git config --global user.email 771565119@qq.com && \
 git config --global user.name hans && \
 
@@ -64,14 +63,14 @@ fi
 git checkout $BASE_BRANCH && \
 
 # 执行编译脚本
-echo "Running build scripts... $BUILD_SCRIPT" && \
+echo "执行脚本 $BUILD_SCRIPT" && \
 eval "$BUILD_SCRIPT" && \
 
 # gh-page 不支持history路由的应对策略
 cp build/index.html build/404.html && \
 
 # 提交到git
-echo "Deploying to GitHub..." && \
+echo "提交内容到 $BRANCH 分支" && \
 git add -f $FOLDER && \
 git commit -m "Deploying to ${BRANCH} from $BASE_BRANCH ${GITHUB_SHA}" --quiet && \
 

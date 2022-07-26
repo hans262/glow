@@ -1,4 +1,4 @@
-name: GLOW
+name: GLOW DEPLOY
 on:
   push:
     branches:

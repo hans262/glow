@@ -12,7 +12,7 @@ export const Input: React.FC<IInput> = ({
         'px-4 py-2 text-green-800 bg-transparent rounded-md ',
         'outline-none focus:shadow-lg',
         'border-green-800 border-2',
-        'placeholder-green-800 placeholder-opacity-75',
+        'placeholder-green-800/50',
         className
       )}
     />
