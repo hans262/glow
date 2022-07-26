@@ -53,18 +53,22 @@ const App = () => {
       currentConnection.current = connection
     })
 
-    // 媒体传输
+    // 监听别人连我
     peer.current.on('call', async (call: any) => {
       if (window.confirm(`是否接受 ${call.peer}?`)) {
         // 获取本地流
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        localVideo.current.srcObject = stream
-        localVideo.current.play()
+        if (stream) {
+          //播放本地流
+          localVideo.current.srcObject = stream
+          localVideo.current.play()
+          // 本地流响应给对方
+          call.answer(stream)
+        } else {
+          message.warning('没有本地摄像头')
+        }
 
-        // 响应
-        call.answer(stream)
-
-        // 监听视频流，并更新到 remoteVideo 上
+        // 监听对方流，并更新到 remoteVideo 上
         call.on('stream', (stream: any) => {
           remoteVideo.current.srcObject = stream;
           remoteVideo.current.play()
@@ -78,10 +82,16 @@ const App = () => {
     })
   }
 
+  //拨打给对方
   const callUser = async () => {
-    console.log(navigator.mediaDevices)
     // 获取本地视频流 需要https环境才可以
     const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+
+    if (!stream) {
+      message.warning('没有本地摄像头，不能打给别人')
+      return
+    }
+    //播放本地流
     localVideo.current.srcObject = stream
     localVideo.current.play()
 
