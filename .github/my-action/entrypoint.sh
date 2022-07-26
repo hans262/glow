@@ -73,7 +73,8 @@ fi
 # 切换到主分支
 git checkout $BASE_BRANCH && \
 
-git branch -a && \
+git config --global user.email
+git config --global user.name
 echo "发布成功！"
 
 # # 执行编译脚本
