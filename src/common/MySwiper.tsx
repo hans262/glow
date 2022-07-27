@@ -1,11 +1,12 @@
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Lazy, Zoom } from 'swiper';
 
-import "swiper/swiper.min.css"
-import "swiper/components/pagination/pagination.min.css"
-import "swiper/components/lazy/lazy.min.css"
-
-import SwiperCore, { Zoom, Lazy, Pagination, Navigation } from 'swiper';
-SwiperCore.use([Zoom, Pagination, Navigation, Lazy]);
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import "swiper/css/lazy";
+import "swiper/css/zoom";
 
 const images = [
   'https://swiperjs.com/demos/images/nature-1.jpg',
@@ -18,26 +19,25 @@ const images = [
   'https://swiperjs.com/demos/images/nature-8.jpg'
 ]
 
-export default function MySwiper() {
+export default () => {
   return (
     <Swiper style={{
       height: 500,
-      position: 'relative',
-      overflow: 'hidden'
     }}
+      modules={[Navigation, Pagination, Lazy, Zoom]}
       lazy={true}
       pagination={{ clickable: true }}
       navigation={true}
       loop={true}
       zoom={true}
     >
-      {images.map((s, k) =>
-        <SwiperSlide key={k}
-          className="swiper-zoom-container"
-          style={{ background: '#000' }}>
+      {images.map((src, index) => <SwiperSlide
+        key={index}
+        style={{ background: '#000' }}>
+        <div className="swiper-zoom-container">
           <img
             alt=""
-            data-src={s}
+            data-src={src}
             className="swiper-lazy"
             style={{
               width: '100%',
@@ -48,8 +48,8 @@ export default function MySwiper() {
           <div
             className="swiper-lazy-preloader swiper-lazy-preloader-white"
           />
-        </SwiperSlide>
-      )}
+        </div>
+      </SwiperSlide>)}
     </Swiper>
   )
 }
