@@ -1,5 +1,4 @@
 declare interface Window {
-  MediaRecorder: any
   MathJax: any
 }
 

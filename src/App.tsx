@@ -14,11 +14,12 @@ const IconView = lazy(() => import('./components/Icon'))
 const MathJax = lazy(() => import('./test/MathJax'))
 const Mysql = lazy(() => import('./mysql'))
 const Peer = lazy(() => import('./test/Peer'))
+const AudioRecorder = lazy(() => import('./test/AudioRecorder'))
 
 export default function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path={"/"} element={<Test />} />
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="/mathjax" element={<MathJax />} />
             <Route path="/mysql" element={<Mysql />} />
             <Route path="/peer" element={<Peer />} />
+            <Route path="/audio_recorder" element={<AudioRecorder />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Suspense>

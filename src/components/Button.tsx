@@ -1,20 +1,25 @@
 import { classNames } from '../common/classNames'
 
-export const Button: React.FC<{
+interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
-  onClick?: () => void
   children: React.ReactNode
-}> = ({ children, className, onClick }) => {
+}
+
+export const Button: React.FC<IButton> = ({
+  children, className, ...props
+}) => {
   return (
     <button
+      {...props}
       className={classNames(
-        'text-white py-2 px-4 shadow',
-        'cursor-pointer hover:bg-green-700',
-        'hover:text-white font-bold md:text-lg',
-        'bg-green-600 hover:shadow-md rounded-md',
+        'py-2 px-4 md:text-lg font-bold',
+        'cursor-pointer hover:bg-green-700 text-white',
+        'hover:text-white shadow',
+        'bg-green-600 hover:shadow-md rounded-lg',
+        'hover:scale-105 transition',
+        (props.disabled && 'disabled:cursor-not-allowed disabled:bg-[#607d8b]'),
         className
       )}
-      onClick={onClick}
     >
       {children}
     </button>
