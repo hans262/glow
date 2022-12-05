@@ -67,7 +67,7 @@ echo "执行脚本 $BUILD_SCRIPT" && \
 eval "$BUILD_SCRIPT" && \
 
 # gh-page 不支持history路由的应对策略
-cp build/index.html build/404.html && \
+cp dist/index.html dist/404.html && \
 
 # 提交到git
 echo "提交内容到 $BRANCH 分支" && \
