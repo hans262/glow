@@ -48,7 +48,7 @@ export default function ImageClassify() {
 
   useMount(async () => {
     //加载mobilenet模型
-    const mnet = await tf.loadLayersModel('/mobilenet_v1_0.25_224/mobilenet.json')
+    const mnet = await tf.loadLayersModel(import.meta.env.BASE_URL + 'mobilenet_v1_0.25_224/mobilenet.json')
     // this.mobilenet.summary() //打印模型信息
     //预热模型，让第一个预测更快。
     const prediction = mnet.predict(tf.zeros([1, 224, 224, 3])) as tf.Tensor2D
