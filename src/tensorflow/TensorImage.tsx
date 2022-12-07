@@ -87,6 +87,25 @@ export default class TensorImage extends PureComponent {
     }
     ctx.putImageData(imageData, 0, 0)
   }
+
+  test = () => {
+    // //预览图片
+    // const image = image3d.dataSync()
+    // // image3d.dataSync()
+    // const ctx = canvas.getContext('2d')!
+    // const imageData = new ImageData(width, height)
+    // for (let i = 0; i < width * height; i++) {
+    //   const j = i * 4
+    //   const k = i * 3
+    //   imageData.data[j + 0] = image[k]
+    //   imageData.data[j + 1] = image[k]
+    //   imageData.data[j + 2] = image[k]
+    //   imageData.data[j + 3] = 255
+    // }
+    // // ctx.putImageData(imageData, 0, 0)
+    // ctx.drawImage(video, 0, 0, 100, 100)
+  }
+
   createModel = () => {
     const model = tf.sequential()
     model.add(tf.layers.conv2d({ inputShape: [28, 28, 1], kernelSize: 3, filters: 16, activation: 'relu' }))

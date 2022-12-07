@@ -1,11 +1,11 @@
-import ImageClassify from './ImageClassify'
 // import MnistTrain from './MnistTrain'
-// import TestTensor from './TestTensor'
+import TestTensor from './TestTensor'
 
 export default function Tensorflowd() {
-  return(
+  return (
     <div>
-      <ImageClassify/>
+      <TestTensor />
+      {/* <MnistTrain/> */}
     </div>
   )
 }

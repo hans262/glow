@@ -8,7 +8,6 @@ import { readFileSync } from 'node:fs'
 export default defineConfig({
   plugins: [react()],
   base: process.env.NODE_ENV === 'production' ? '/glow/' : '/',
-  // base: '/',
   server: {
     port: 1234,
     https: true ? {

@@ -1,4 +1,6 @@
-@tailwind base;
+/* @tailwind base; */
+/* 于antd有冲突 */
+
 @tailwind components;
 @tailwind utilities;
 

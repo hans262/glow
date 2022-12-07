@@ -15,6 +15,7 @@ const MathJax = lazy(() => import('./test/MathJax'))
 const Mysql = lazy(() => import('./mysql'))
 const Peer = lazy(() => import('./test/Peer'))
 const AudioRecorder = lazy(() => import('./test/AudioRecorder'))
+const ImageClassify = lazy(() => import('./tensorflow/ImageClassify'))
 
 export default function App() {
   return (
@@ -22,8 +23,9 @@ export default function App() {
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path={"/"} element={<Test />} />
+            <Route path={"/"} element={<ImageClassify />} />
             <Route path={"/tensorflow"} element={<Tensorflow />} />
+            <Route path={"/test"} element={<Test />} />
             <Route path="/redux" element={<Redux />} />
             <Route path="/rxjs/*" element={<Rxjs />} />
             <Route path="/game" element={<Game />} />
