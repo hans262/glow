@@ -1,7 +1,9 @@
-export const type = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
 
-type Data = [number[], string[]][]
+type Data = [number[], [string]][]
 
+export const lablel = ['setosa', 'versicolor', 'virginica']
+
+// ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
 export const data: Data = [
   [[5.1, 3.5, 1.4, 0.2], ['setosa']],
   [[4.9, 3, 1.4, 0.2], ['setosa']],
@@ -154,3 +156,4 @@ export const data: Data = [
   [[6.2, 3.4, 5.4, 2.3], ['virginica']],
   [[5.9, 3, 5.1, 1.8], ['virginica']]
 ]
+

@@ -1,17 +1,12 @@
 import { createRef, PureComponent } from 'react'
 import * as tf from '@tensorflow/tfjs';
 import { loadImageData, loadLabelData, IMAGE_SIZE, IMAGE_H, IMAGE_W, NUM_CLASSES } from './MnistData'
-import * as G2 from '@antv/g2'
-import { Button, message, InputNumber, Alert, Progress } from 'antd'
-import './index.css'
+import { Button, message, InputNumber, Alert, Progress, Space } from 'antd'
 
 export default class MnistTrain extends PureComponent {
   imageBoxRef = createRef<HTMLDivElement>()
   canvasRef = createRef<HTMLCanvasElement>()
   imageRef = createRef<HTMLImageElement>()
-
-  lossChart: G2.Chart | null = null
-  accuracyChart: G2.Chart | null = null
 
   model: tf.Sequential | null = null
   images: Uint8Array | null = null
@@ -30,7 +25,6 @@ export default class MnistTrain extends PureComponent {
 
   componentDidMount() {
     this.initCanvas()
-    this.renderChart()
   }
 
   loadMnistData = async () => {
@@ -80,7 +74,7 @@ export default class MnistTrain extends PureComponent {
           trainBatchCount++
           const trainProgress = ~~((trainBatchCount / totalNumBatches * 100) * 100) / 100
           this.setState({ trainProgress, valAcc: logs.acc, valLoss: logs.loss })
-          this.updateChart(logs.loss, logs.acc)
+          // this.updateChart(logs.loss, logs.acc)
           if (batch % 10 === 0) {
             this.testImagePredict()
           }
@@ -202,7 +196,7 @@ export default class MnistTrain extends PureComponent {
       ctx.putImageData(imageData, 0, 0)
       const pred = document.createElement('div')
       const correct = prediction === real
-      pred.className = correct ? 'pred-correct' : 'pred-incorrect'
+      pred.style.backgroundColor = correct ? '#34d66a' : 'red'
       pred.innerText = `预测: ${prediction}`
       div.appendChild(pred)
       div.appendChild(canvas)
@@ -256,91 +250,13 @@ export default class MnistTrain extends PureComponent {
     })
   }
 
-  updateChart = (loss: number, acc: number) => {
-    if (!this.lossChart || !this.accuracyChart) return
-    const batch = this.trainBatchCount++
-    const lossData = [
-      ...this.lossChart.getData(), { batch, loss }
-    ]
-    this.lossChart.changeData(lossData)
-    const accuracyData = [
-      ...this.accuracyChart.getData(), { batch, acc }
-    ]
-    this.accuracyChart.changeData(accuracyData)
-  }
-
-  renderChart = () => {
-    const lossData: { batch: number, loss: number }[] = [
-      // { batch: 0, loss: 1 }, { batch: 1, loss: 2 }, { batch: 2, loss: 1 }
-    ]
-    const lossChart = new G2.Chart({
-      container: 'lossChart',
-      autoFit: true,
-      height: 300,
-      padding: 50
-    })
-    lossChart.data(lossData)
-    lossChart.line().position('batch*loss')
-    lossChart.point().position('batch*loss').size(4).shape('circle').style({
-      stroke: '#fff',
-      lineWidth: 1
-    })
-    lossChart.scale('loss', {
-      alias: 'LOSS'
-    })
-    lossChart.axis('loss', {
-      title: { style: { fontSize: 16, fill: '#aaaaaa' } }
-    })
-    lossChart.scale('batch', {
-      alias: 'BATCH'
-    })
-    lossChart.axis('batch', {
-      title: { style: { fontSize: 16, fill: '#aaaaaa' } }
-    })
-    lossChart.render()
-    this.lossChart = lossChart
-
-    const accuracyChart = new G2.Chart({
-      container: 'accuracyChart',
-      autoFit: true,
-      height: 300,
-      padding: 50
-    })
-    const accuracyData: { batch: number, acc: number }[] = [
-      // { batch: 0, acc: 1 }, { batch: 1, acc: 2 }, { batch: 2, acc: 1 }
-    ]
-    accuracyChart.data(accuracyData)
-    accuracyChart.line().position('batch*acc').style({
-      stroke: '#facc15'
-    })
-    accuracyChart.point().position('batch*acc').size(4).shape('circle').style({
-      stroke: 'white',
-      lineWidth: 1,
-      fill: '#facc15'
-    })
-    accuracyChart.scale('acc', {
-      alias: 'ACCURACY'
-    })
-    accuracyChart.axis('acc', {
-      title: { style: { fontSize: 16, fill: '#aaaaaa' } }
-    })
-    accuracyChart.scale('batch', {
-      alias: 'BATCH'
-    })
-    accuracyChart.axis('batch', {
-      title: { style: { fontSize: 16, fill: '#aaaaaa' } }
-    })
-    accuracyChart.render()
-    this.accuracyChart = accuracyChart
-  }
-
   render() {
     return (
-      <div className="tf">
-        <div className="ftitle">
+      <div className="container mx-auto p-4">
+        <div className="font-bold text-2xl mb-2">
           TRAINING PARAMETERS
         </div>
-        <div className="bt">
+        <Space className='mb-2'>
           <Button
             loading={this.state.mnistDataPending}
             type="primary" size="large"
@@ -357,9 +273,8 @@ export default class MnistTrain extends PureComponent {
             danger
             loading={this.state.trainPending}
           >TRAIN MODEL</Button>
-          <span style={{ marginLeft: '10px' }}>EPOCHS</span>
+          <span>EPOCHS</span>
           <InputNumber
-            style={{ marginLeft: '10px' }}
             min={1} max={3}
             defaultValue={1}
             size="large"
@@ -369,8 +284,8 @@ export default class MnistTrain extends PureComponent {
               }
             }}
           />
-        </div>
-        <div className="ftitle">
+        </Space>
+        <div className="font-bold text-2xl mb-2">
           TRAINING PROGRESS
         </div>
         <div>
@@ -380,13 +295,8 @@ export default class MnistTrain extends PureComponent {
           /> : null}
           <Progress percent={this.state.trainProgress} steps={30} strokeColor="#52c41a" />
         </div>
-        <div id="lossChart"></div>
-        <div id="accuracyChart"></div>
-        <div className="ftitle">
-          INFERENCE EXAMPLES
-        </div>
-        <div ref={this.imageBoxRef} className="pred"></div>
-        <div className="ftitle">
+        <div ref={this.imageBoxRef} className="flex flex-wrap mb-2"></div>
+        <div className="font-bold text-2xl mb-2">
           TEST MODEL
         </div>
         <div className="bt">

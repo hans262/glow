@@ -19,7 +19,7 @@ export default function ImageClassify() {
   const mobilenet = useRef<tf.LayersModel>()
 
   const [state, setState] = useSetState({
-    name: '',
+    name: 'hans',
     modelReady: false,
     videoStatus: 'unstart' as 'pending' | 'started' | 'unstart' | 'faulted',
     training: false,//训练中
@@ -27,29 +27,11 @@ export default function ImageClassify() {
     epoch: 0, loss: 0
   })
 
-  const updateCount = (name: string, preview: string) => {
-    let upIndex = -1
-    let list = state.list.map((i, k) => {
-      if (i.name === name) {
-        upIndex = k
-        return { ...i, count: i.count + 1, preview: [preview, ...i.preview] }
-      } else {
-        return i
-      }
-    })
-
-    if (upIndex === -1) {
-      list = [...list, { name, count: 1, preview: [preview] }]
-      upIndex = list.length - 1
-    }
-    setState({ list })
-    return upIndex
-  }
 
   useMount(async () => {
     //加载mobilenet模型
     const mnet = await tf.loadLayersModel(import.meta.env.BASE_URL + 'mobilenet_v1_0.25_224/mobilenet.json')
-    // this.mobilenet.summary() //打印模型信息
+    // mnet.summary() //打印模型信息
     //预热模型，让第一个预测更快。
     const prediction = mnet.predict(tf.zeros([1, 224, 224, 3])) as tf.Tensor2D
     prediction.dispose() //内存回收
@@ -67,7 +49,7 @@ export default function ImageClassify() {
     setState({ modelReady: true })
   })
 
-  //下载mobilenet
+  //mobilenet 的原下载地址
   const downloadMobilenet = async () => {
     const mobilenet = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json')
     const layer = mobilenet.getLayer('conv_pw_13_relu')
@@ -100,7 +82,7 @@ export default function ImageClassify() {
       batchSize,
       epochs: 20,
       callbacks: {
-        onEpochEnd: (epoch, logs: any) => {
+        onEpochEnd: (_, logs: any) => {
           setState(e => ({ epoch: e.epoch + 1, loss: logs.loss }))
           // console.log("Epoch: " + epoch + " Loss: " + logs.loss)
         },
@@ -126,62 +108,90 @@ export default function ImageClassify() {
     message.success(state.list.find((_, key) => n === key)?.name ?? '未知')
   }
 
-  const keepXs = (cxs: tf.Tensor4D) => {
-    if (xs.current) {
-      const oldXs = xs.current
-      xs.current = oldXs.concat(cxs, 0)
-      oldXs.dispose()
-    } else {
-      xs.current = cxs
-    }
-    // console.log(xs.current)
+  const test = () => {
+    // //预览图片
+    // const image = image3d.dataSync()
+    // // image3d.dataSync()
+    // const ctx = canvas.getContext('2d')!
+    // const imageData = new ImageData(width, height)
+    // for (let i = 0; i < width * height; i++) {
+    //   const j = i * 4
+    //   const k = i * 3
+    //   imageData.data[j + 0] = image[k]
+    //   imageData.data[j + 1] = image[k]
+    //   imageData.data[j + 2] = image[k]
+    //   imageData.data[j + 3] = 255
+    // }
+    // // ctx.putImageData(imageData, 0, 0)
+    // ctx.drawImage(video, 0, 0, 100, 100)
   }
 
-  const keepYs = (cys: tf.Tensor2D) => {
-    if (ys.current) {
-      const oldYs = ys.current
-      ys.current = oldYs.concat(cys, 0)
-      oldYs.dispose()
-    } else {
-      ys.current = cys
+  const imageFromVideo = (video: HTMLVideoElement, size: [number, number]) => {
+    const canvas = document.createElement('canvas')
+    canvas.width = size[0]
+    canvas.height = size[1]
+    const ctx = canvas.getContext('2d')!
+    ctx.drawImage(video, 0, 0, size[0], size[1])
+    return canvas.toDataURL()
+  }
+
+  const updateCount = (name: string, preview: string) => {
+    let upIndex = -1
+    let list = state.list.map((i, k) => {
+      if (i.name === name) {
+        upIndex = k
+        return { ...i, count: i.count + 1, preview: [preview, ...i.preview] }
+      } else {
+        return i
+      }
+    })
+
+    if (upIndex === -1) {
+      list = [...list, { name, count: 1, preview: [preview] }]
+      upIndex = list.length - 1
     }
-    // console.log(ys.current)
+    setState({ list })
+    return upIndex
   }
 
   const onKeep = (name: string) => {
     //检查摄像头是否打开
     if (state.videoStatus !== 'started') {
-      message.error('请打开摄像头')
-      return
+      return message.error('请打开摄像头')
     }
 
     if (!name) {
-      message.warning('请输入名称')
-      return
+      return message.warning('请输入名称')
     }
 
-    if (!mobilenet.current) return
-    const video = videoRef.current!
-    const image3d = tf.browser.fromPixels(video)
-    //280 280 3 -> 224 224 3
-    const resized = tf.image.resizeBilinear(image3d, [224, 224])
-    const cxs = resized.as4D(1, 224, 224, 3)
+    //创建样本
+    const mxs = tf.tidy(() => {
+      const image3d280 = tf.browser.fromPixels(videoRef.current!)
+      //280 280 3 -> 224 224 3
+      const image3d224 = tf.image.resizeBilinear(image3d280, [224, 224])
+      //224 224 3 -> 1 224 224 3
+      const image4d224 = image3d224.as4D(1, 224, 224, 3)
+      //input-> 1 224 224 3, output-> 1 7 7 256
+      const cxs = mobilenet.current!.predict(image4d224) as tf.Tensor4D
 
-    const canvas = document.createElement('canvas')
-    canvas.width = 100
-    canvas.height = 100
-    const ctx = canvas.getContext('2d')!
-    ctx.drawImage(video, 0, 0, 100, 100)
-    const base64Image = canvas.toDataURL()
+      return xs.current ? xs.current.concat(cxs, 0) : cxs
+    })
+    xs.current?.dispose()
+    xs.current = mxs
 
-    const key = updateCount(name, base64Image)
-    const ysd = new Array(categories).fill(0).fill(1, key, key + 1)
-    const cys = tf.tensor2d(ysd, [1, categories])
+    //更新、新增分类分类，并返回当前分类索引
+    const index = updateCount(name,
+      imageFromVideo(videoRef.current!, [100, 100])
+    )
 
-    //input-> 1 224 224 3, output-> 1 7 7 256
-    const mxs = mobilenet.current.predict(cxs) as tf.Tensor4D
-    keepXs(mxs)
-    keepYs(cys)
+    //创建标签
+    const mys = tf.tidy(() => {
+      const ysd = new Array(categories).fill(0).fill(1, index, index + 1)
+      const cys = tf.tensor2d(ysd, [1, categories])
+      return ys.current ? ys.current.concat(cys, 0) : cys
+    })
+    ys.current?.dispose()
+    ys.current = mys
   }
 
   return (
