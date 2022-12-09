@@ -64,6 +64,14 @@ export function loadImageData(): Promise<Uint8Array> {
         }
       }
       const datasetImages = new Uint8Array(datasetBytesBuffer)
+      // console.log(datasetBytesBuffer)
+      // datasetBytesBuffer.
+
+      // let b = new Blob([datasetBytesBuffer])
+      // let a = document.createElement('a')
+      // a.href = window.URL.createObjectURL(b)
+      // a.download = "121"
+      // a.click()
       const res = datasetImages.slice(0, IMAGE_SIZE * NUM_TRAIN_ELEMENTS)
       resolve(res)
     }

@@ -1,13 +1,10 @@
-import { Button } from "../components/Button";
-import { Input } from "../components/Input";
+import ImageDatad from "./ImageDatad";
+import IndexDb from "./IndexDb";
 
 export default function Test() {
   return (
     <div className="px-8 py-3">
-      <Button onClick={() => {
-        
-      }}>按钮</Button>
-      <Input onChange={e => console.log(e.target.value)} />
+      <IndexDb/>
     </div>
   )
 }

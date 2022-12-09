@@ -8,14 +8,17 @@ const Tensorflow = lazy(() => import('./tensorflow'))
 const Test = lazy(() => import('./test/Test'))
 const Redux = lazy(() => import('./redux'))
 const Rxjs = lazy(() => import('./rxjs'))
-const Game = lazy(() => import('./game'))
-const DuckShooter = lazy(() => import('./duckshooter'))
+
 const IconView = lazy(() => import('./components/Icon'))
 const MathJax = lazy(() => import('./test/MathJax'))
 const Mysql = lazy(() => import('./mysql'))
 const Peer = lazy(() => import('./test/Peer'))
 const AudioRecorder = lazy(() => import('./test/AudioRecorder'))
 const ImageClassify = lazy(() => import('./tensorflow/ImageClassify'))
+
+const DuckShooter = lazy(() => import('./duckshooter'))
+const BlockGame = lazy(() => import('./game/BlockGame'))
+const BalloonGame = lazy(() => import('./game/BalloonGame'))
 
 export default function App() {
   return (
@@ -28,8 +31,9 @@ export default function App() {
             <Route path={"/test"} element={<Test />} />
             <Route path="/redux" element={<Redux />} />
             <Route path="/rxjs/*" element={<Rxjs />} />
-            <Route path="/game" element={<Game />} />
-            <Route path="/duckshooter" element={<DuckShooter />} />
+            <Route path="/game_block" element={<BlockGame />} />
+            <Route path="/game_balloon" element={<BalloonGame />} />
+            <Route path="/game_duckshooter" element={<DuckShooter />} />
             <Route path="/icon" element={<IconView />} />
             <Route path="/mathjax" element={<MathJax />} />
             <Route path="/mysql" element={<Mysql />} />
