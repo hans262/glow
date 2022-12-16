@@ -1,11 +1,11 @@
 import { Button, Divider } from "antd";
 import { createRef, useEffect, useRef } from "react";
-import { useSetState } from "../hooks/useSetState";
+import { useSetState } from "react-use";
 
 const drawNextFrame = (
   analyserNode: AnalyserNode, canvas: HTMLCanvasElement
 ) => {
-  requestAnimationFrame(() => { drawNextFrame(analyserNode, canvas) })
+  requestAnimationFrame((n) => { drawNextFrame(analyserNode, canvas) })
   const dataArray = new Uint8Array(analyserNode.frequencyBinCount)
   // 长度为 analyser.frequencyBinCount
   const bufferLength = dataArray.length
@@ -73,6 +73,7 @@ const AudioRecorder: React.FC = () => {
       console.log(err)
     })
   }, [])
+
 
   const onRecordClick = () => {
     if (mediaRecorderRef.current?.state === 'inactive') {
