@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export interface TodoOpt {
+interface TodoOpt {
   id: number
   text: string
   completed: boolean
@@ -8,7 +8,7 @@ export interface TodoOpt {
 
 export type TodoFilter = 'SHOW_ALL' | 'SHOW_COMPLETED' | 'SHOW_ACTIVE'
 
-export interface Todo {
+interface Todo {
   data: TodoOpt[]
   filter: TodoFilter
 }

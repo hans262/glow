@@ -15,6 +15,7 @@ const Mysql = lazy(() => import('./mysql'))
 const Peer = lazy(() => import('./test/Peer'))
 const AudioRecorder = lazy(() => import('./test/AudioRecorder'))
 const ImageClassify = lazy(() => import('./tensorflow/ImageClassify'))
+const ChatGpt3 = lazy(() => import('./test/ChatGpt3'))
 
 const DuckShooter = lazy(() => import('./duckshooter'))
 const BlockGame = lazy(() => import('./game/BlockGame'))
@@ -31,6 +32,7 @@ export default function App() {
             <Route path={"/test"} element={<Test />} />
             <Route path="/redux" element={<Redux />} />
             <Route path="/rxjs/*" element={<Rxjs />} />
+            <Route path="/chat_gpt3" element={<ChatGpt3 />} />
             <Route path="/game_block" element={<BlockGame />} />
             <Route path="/game_balloon" element={<BalloonGame />} />
             <Route path="/game_duckshooter" element={<DuckShooter />} />

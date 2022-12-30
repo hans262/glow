@@ -1,3 +1,4 @@
+import { Space } from "antd"
 
 export interface IconProps {
   style?: React.CSSProperties
@@ -399,7 +400,7 @@ export const Language: React.FC<IconProps> = ({
 
 export default function IconView() {
   return (
-    <div className="flex p-3 space-x-2 flex-wrap">
+    <Space className="flex flex-wrap p-3">
       <AccountCircle size={50} />
       <BrightnessAuto size={50} />
       <BrightnessHigh size={50} />
@@ -424,6 +425,6 @@ export default function IconView() {
       <Settings size={50} />
       <SettingsApplications size={50} />
       <Stars size={50} />
-    </div>
+    </Space>
   )
 }

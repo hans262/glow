@@ -1,13 +1,12 @@
 import todo from './todo'
 import music from './music'
-import plane from './plane'
 
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 
 export const store = configureStore({
   reducer: {
-    todo, music, plane
+    todo, music
   }
 })
 

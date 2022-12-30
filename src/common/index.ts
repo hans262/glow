@@ -16,3 +16,16 @@ export const base64fromFile = (file: File) => {
     }
   })
 }
+
+/**
+ * 金额转换
+ * @param number 
+ * @returns ¥123,456.79
+ */
+export const NumberFormat = (number: number) => {
+  const china = new Intl.NumberFormat("zh-CN", {
+    style: "currency",
+    currency: "CNY",
+  });
+  return china.format(number)
+}

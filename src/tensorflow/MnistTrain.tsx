@@ -5,10 +5,7 @@ import { Button, message, InputNumber, Alert, Progress, Space } from 'antd'
 import { useMount, useSetState } from 'react-use';
 
 export default function MnistTrain() {
-  const imageBoxRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const imageRef = useRef<HTMLImageElement>(null)
-
   const model = useRef<tf.Sequential>()
   const images = useRef<Uint8Array>()
   const labels = useRef<Uint8Array>()
@@ -20,7 +17,7 @@ export default function MnistTrain() {
     valAcc: 0,
     valLoss: 0,
     trainProgress: 0,
-    predictResult: 0
+    previewData: [] as { url: string, real: number, predict: number }[]
   })
 
   useMount(() => {
@@ -49,7 +46,6 @@ export default function MnistTrain() {
     const epochs = state.trainEpoch
     setState({ trainPending: true })
     console.log('Training model...')
-    // const model = this.model
     const batchSize = 320
     //遗留15%的训练数据进行验证，以监控训练期间的过度拟合
     const validationSplit = 0.15
@@ -65,7 +61,7 @@ export default function MnistTrain() {
     let trainBatchCount = 0
     //总批次
     const totalNumBatches = Math.ceil(xs.shape[0] * (1 - validationSplit) / batchSize) * epochs
-    await model.current.fit(xs, ys, {
+    model.current.fit(xs, ys, {
       batchSize,
       validationSplit,
       epochs,
@@ -74,19 +70,20 @@ export default function MnistTrain() {
           trainBatchCount++
           const trainProgress = ~~((trainBatchCount / totalNumBatches * 100) * 100) / 100
           setState({ trainProgress, valAcc: logs.acc, valLoss: logs.loss })
-          // this.updateChart(logs.loss, logs.acc)
+
           if (batch % 10 === 0) {
-            testImagePredict()
+            previewRender()
           }
           await tf.nextFrame()
         },
         onEpochEnd: async (epoch, logs: any) => {
           console.log("Epoch: " + epoch + " Loss: " + logs.loss)
           setState({ valAcc: logs.val_acc, valLoss: logs.val_loss })
+          previewRender()
           await tf.nextFrame()
         },
         onTrainEnd: () => {
-          console.log('Train done!')
+          console.log('训练结束!')
           setState({ trainPending: false })
         }
       }
@@ -95,7 +92,7 @@ export default function MnistTrain() {
 
   const createConvModel = () => {
     if (model.current) {
-      return message.success('Model is created!')
+      return message.success('模型已经创建！')
     }
     const md = tf.sequential()
     md.add(tf.layers.conv2d({
@@ -114,7 +111,7 @@ export default function MnistTrain() {
     md.compile({ optimizer: 'rmsprop', loss: 'categoricalCrossentropy', metrics: ['accuracy'] })
     md.summary()
     model.current = md
-    message.success('Model create done!')
+    message.success('模型创建完成!')
   }
 
   const createDenseModel = () => {
@@ -132,16 +129,16 @@ export default function MnistTrain() {
   }
 
   /**
-   * 测试预测图片结果
+   * 渲染预览测试图片
    */
-  const testImagePredict = () => {
+  const previewRender = () => {
     if (!images.current || !labels.current || !model.current) return
-    //获取图片总张数
-    // console.log('Img total is ' + this.images.length / 784)
-    //渲染范围 0 ~ 100 总的范围 0 ~ (this.images.length / 784)
-    const range = [100, 200]
-    const count = range[1] - range[0]
-    //按范围截取图片
+    //图片总张数 images.current.length / (28 * 28)
+    //总的范围 0 ~ (images.current.length / (28 * 28))
+    const range = [100, 200] //当前渲染范围
+    //渲染张数 range[1] - range[0]
+
+    //截取数据
     const cimages = images.current.slice(IMAGE_SIZE * range[0], range[1] * IMAGE_SIZE)
     const clabels = labels.current.slice(NUM_CLASSES * range[0], range[1] * NUM_CLASSES)
 
@@ -156,27 +153,18 @@ export default function MnistTrain() {
     //必须显式的销毁
     xs.dispose()
     output.dispose()
-    renderCanvas(cimages, count, predictions, reals)
-  }
 
-  const renderCanvas = (images: Uint8Array, count: number, predictions: number[], reals: number[]) => {
-    const imageBox = imageBoxRef.current!
-    imageBox.innerHTML = ''
-    for (let i = 0; i < count; i++) {
-      const image = images.slice(i * 784, i * 784 + 784)
-      const prediction = predictions[i]
-      const real = reals[i]
-      const div = document.createElement('div')
-      div.className = 'pred-container'
+    const previewData = predictions.map((predict, index) => {
+      const image = cimages.slice(index * 784, index * 784 + 784)
+      const real = reals[index]
       const canvas = document.createElement('canvas')
-      canvas.className = 'prediction-canvas'
       const [width, height] = [28, 28]
       canvas.width = width
       canvas.height = height
       const ctx = canvas.getContext('2d')!
       const imageData = new ImageData(width, height)
       /**
-       * ImageData.prototype.Uint8ClampedArray: Uint8ClampedArray
+       * ImageData.prototype.data: Uint8ClampedArray
        * 是一个8位无符号整型数组，8个二进制位有256种变化
        * 所以能存储的十进制数就是0 ~ 255
        * 
@@ -194,37 +182,32 @@ export default function MnistTrain() {
         imageData.data[j + 3] = 255
       }
       ctx.putImageData(imageData, 0, 0)
-      const pred = document.createElement('div')
-      const correct = prediction === real
-      pred.style.backgroundColor = correct ? '#34d66a' : 'red'
-      pred.innerText = `预测: ${prediction}`
-      div.appendChild(pred)
-      div.appendChild(canvas)
-      imageBox.appendChild(div)
-    }
+      return { url: canvas.toDataURL('image/png'), real, predict }
+    })
+    setState({ previewData })
   }
 
   const predict = () => {
-    const canvasImg = imageRef.current!
-    const drawCtx = canvasRef.current!.getContext('2d')!
     if (!model.current) {
       return message.warning('请先创建模型')
     }
 
     //只要红色通道
-    const image3d280 = tf.browser.fromPixels(canvasImg, 1)
+    const image3d280 = tf.browser.fromPixels(canvasRef.current!, 1)
     const image3d28 = tf.image.resizeBilinear(image3d280, [28, 28])
     const image4d28 = image3d28.as4D(1, 28, 28, 1)
 
     const prediction = model.current.predict(image4d28) as tf.Tensor2D
     const maxIndex = prediction.argMax(1).dataSync()
-    setState({ predictResult: maxIndex[0] })
+    message.success(maxIndex[0])
+
+    //清空画板
+    const drawCtx = canvasRef.current!.getContext('2d')!
     drawCtx.fillRect(0, 0, 280, 280)
   }
 
   const initCanvas = () => {
     const canvas = canvasRef.current!
-    const image = imageRef.current!
     canvas.width = 280
     canvas.height = 280
     const ctx = canvas.getContext('2d')!
@@ -236,7 +219,6 @@ export default function MnistTrain() {
     })
     canvas.addEventListener('mouseup', (e) => {
       moused = false
-      image.src = canvas.toDataURL('image/png')
     })
     canvas.addEventListener('mousemove', (e) => {
       if (!moused) return
@@ -253,25 +235,25 @@ export default function MnistTrain() {
   return (
     <div className="container mx-auto p-4">
       <div className="font-bold text-2xl mb-2">
-        TRAINING PARAMETERS
+        训练参数
       </div>
       <Space className='mb-2'>
         <Button
           loading={state.mnistDataPending}
           type="primary" size="large"
           onClick={loadMnistData}
-        >LOAD DATA</Button>
+        >加载数据</Button>
         <Button
           onClick={createConvModel}
           type="primary"
           size="large"
-        >CREATE MODEL</Button>
+        >创建模型</Button>
         <Button
           onClick={train}
           size="large"
           danger
           loading={state.trainPending}
-        >TRAIN MODEL</Button>
+        >训练模型</Button>
         <span>EPOCHS</span>
         <InputNumber
           min={1} max={3}
@@ -285,7 +267,7 @@ export default function MnistTrain() {
         />
       </Space>
       <div className="font-bold text-2xl mb-2">
-        TRAINING PROGRESS
+        训练进度
       </div>
       <div>
         {state.valAcc ? <Alert
@@ -294,17 +276,22 @@ export default function MnistTrain() {
         /> : null}
         <Progress percent={state.trainProgress} steps={30} strokeColor="#52c41a" />
       </div>
-      <div ref={imageBoxRef} className="flex flex-wrap mb-2"></div>
+      <Space className="flex flex-wrap">
+        {state.previewData.map((v, k) => <div key={k}>
+          <div
+            style={{ backgroundColor: v.real === v.predict ? '#34d66a' : 'red' }}
+          >{v.predict}</div>
+          <img src={v.url} alt="" />
+        </div>)}
+      </Space>
       <div className="font-bold text-2xl mb-2">
-        TEST MODEL
+        测试模型
       </div>
-      <div className="bt">
-        <Button size="large" type="primary" onClick={predict}>PREDICT</Button>
+      <div className="mb-2">
+        <Button size="large" type="primary" onClick={predict}>预测</Button>
       </div>
-      <div className="draw">
+      <div>
         <canvas ref={canvasRef}></canvas>
-        <img alt="" ref={imageRef} style={{ width: 280, height: 280, marginLeft: '2px' }} />
-        <span style={{ fontSize: '80px', marginLeft: '30px', fontWeight: 600 }}>{state.predictResult}</span>
       </div>
     </div>
   )

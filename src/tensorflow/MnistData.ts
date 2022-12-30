@@ -10,12 +10,11 @@ export const IMAGE_SIZE = IMAGE_H * IMAGE_W
  * 宽 784 * 高 65000
  * 每一行的784个像素点 -> 28 * 28 的一张图片
  * 
- * 每一个位置用三十二位浮点数存储红色通道的像素值，占用4个字节
- * Float32Array 用用三十二位浮点数存储
- * length = 65000 * 784 | byteLength = 65000 * 784 * 4
+ * Uint8Array 八位无符号整型数组存储 只存储一个通道
+ * byteLength = 65000 * 784
  */
 
-const NUM_DATASET_ELEMENTS = 65000
+const NUM_DATASET_ELEMENTS = 65000 //图片总数
 const MNIST_IMAGES_SPRITE_PATH = import.meta.env.BASE_URL + 'mnist_images.png'
 
 /**
@@ -46,7 +45,7 @@ export function loadImageData(): Promise<Uint8Array> {
       img.width = img.naturalWidth
       img.height = img.naturalHeight
       const datasetBytesBuffer = new ArrayBuffer(NUM_DATASET_ELEMENTS * IMAGE_SIZE)
-      //一次裁剪5000高度的图片，以获取像素，避免内存泄露
+      //一次裁剪5000高度的图片，以获取像素，避免内存泄露；也就是5000张图片
       const chunkSize = 5000
       canvas.width = img.width
       canvas.height = chunkSize
@@ -64,14 +63,7 @@ export function loadImageData(): Promise<Uint8Array> {
         }
       }
       const datasetImages = new Uint8Array(datasetBytesBuffer)
-      // console.log(datasetBytesBuffer)
-      // datasetBytesBuffer.
-
-      // let b = new Blob([datasetBytesBuffer])
-      // let a = document.createElement('a')
-      // a.href = window.URL.createObjectURL(b)
-      // a.download = "121"
-      // a.click()
+      console.log(datasetImages)
       const res = datasetImages.slice(0, IMAGE_SIZE * NUM_TRAIN_ELEMENTS)
       resolve(res)
     }
