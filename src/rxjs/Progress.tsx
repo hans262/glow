@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { interval } from 'rxjs'
-import { take, map } from 'rxjs/operators'
+import { useState, useEffect } from 'react'
+import { interval, take, map } from 'rxjs'
 import { Progress } from 'antd'
 
 export default function RxProgress() {
 	const [percent, setPercent] = useState(0)
+
 	useEffect(() => {
 		const observable = interval(60).pipe(
 			take(10),
@@ -18,6 +18,7 @@ export default function RxProgress() {
 			subscription.unsubscribe()
 		}
 	}, [])
+
 	return (
 		<>
 			<h1>RxProgress</h1>

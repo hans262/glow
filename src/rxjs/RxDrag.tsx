@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { fromEvent } from 'rxjs'
-import { mergeMap, takeUntil } from 'rxjs/operators'
+import { fromEvent, mergeMap, takeUntil } from 'rxjs'
+
 /**
  * takeUntil 某个时候结束流
  * mergeMap 合并一个流
@@ -41,7 +41,7 @@ export default function RxDrag() {
     }
   })
   return (
-    <>
+    <div className='px-8 py-3'>
       <h1>Rx_Drag</h1>
       <div ref={drag} style={{
         position: 'absolute',
@@ -50,6 +50,6 @@ export default function RxDrag() {
         backgroundColor: 'blue',
         cursor: 'move'
       }}></div>
-    </>
+    </div>
   )
 }

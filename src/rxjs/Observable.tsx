@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Observable } from 'rxjs'
 
 export default function RxObservable() {

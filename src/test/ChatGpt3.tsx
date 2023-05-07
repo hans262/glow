@@ -19,7 +19,7 @@ export default function ChatGpt3() {
   })
   const [openApiKey, setOpenApiKey] = useLocalStorage<string>(
     'openai-api-key',
-    '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'
+    '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'
   )
 
   const openai = useRef(new OpenAIApi(new Configuration({
@@ -55,9 +55,10 @@ export default function ChatGpt3() {
       max_tokens: 1000,
       frequency_penalty: 1.0,
       presence_penalty: 1.0,
-      top_p: 0.4, //概率质量
+      top_p: 0.9, //概率质量
     })
-
+    
+    console.log(response)
     newWords = newWords.map(v => {
       return v.id === id ? { ...v, ChatGpt3: response.data.choices[0].text!, pending: false } : v
     })

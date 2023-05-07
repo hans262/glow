@@ -188,20 +188,33 @@ export class DuckShooter {
   gunLens: GunLens
   ducks: Duck[] = []
   suspend = false
+
   constructor(public root: HTMLDivElement) {
     const { canvas, ctx } = this.createCanvas()
     this.canvas = canvas
     this.ctx = ctx
     root.appendChild(this.canvas)
-    const { width, height } = this.getCanvasSize()
-    this.canvas.width = width
-    this.canvas.height = height
-    this.width = width
-    this.height = height
+
+    const rootRect = this.root.getBoundingClientRect()
+    this.canvas.width = rootRect.width
+    this.canvas.height = rootRect.height
+    this.width = rootRect.width
+    this.height = rootRect.height
+
     this.gunLens = new GunLens(this.width, this.height)
+
     window.addEventListener('keydown', this.onKeyDown)
     window.addEventListener('keyup', this.onKeyUp)
     this.setup()
+  }
+
+  resizeCanvs() {
+    const rootRect = this.root.getBoundingClientRect()
+    this.canvas.width = rootRect.width
+    this.canvas.height = rootRect.height
+    this.width = rootRect.width
+    this.height = rootRect.height
+    this.gunLens = new GunLens(this.width, this.height)
   }
 
   createCanvas() {
@@ -209,14 +222,6 @@ export class DuckShooter {
     const ctx = canvas.getContext('2d')!
     canvas.style.border = '1px solid'
     return { canvas, ctx }
-  }
-
-  getCanvasSize() {
-    const rootRect = this.root.getBoundingClientRect()
-    this.canvas.height = rootRect.height
-    let width = rootRect.height * 1.3
-    width = width > rootRect.width ? rootRect.width : width
-    return { width, height: rootRect.height }
   }
 
   close() {

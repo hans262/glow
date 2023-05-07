@@ -8,6 +8,25 @@ module.exports = {
     extend: {
       colors: {
         hover: 'red'
+      },
+      animation: {
+        'move-right': 'myfirst 6s linear',
+      },
+      keyframes: {
+        myfirst: {
+          '0%': { left: 0 },
+          '75%, 100%': {
+            left: '100%',
+            // right: 0,
+            opacity: 0
+          }
+        },
+        ping2: {
+          '75%, 100%': {
+            transform: 'scale(1)',
+            opacity: 0
+          }
+        }
       }
     },
   },
