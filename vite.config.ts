@@ -10,7 +10,7 @@ export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? '/glow/' : '/',
   server: {
     port: 1234,
-    https: true ? {
+    https: false ? {
       //需要本地自签证书
       key: readFileSync('./public/localhost+1-key.pem'),
       cert: readFileSync('./public/localhost+1.pem'),

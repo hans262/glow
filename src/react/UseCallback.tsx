@@ -1,30 +1,27 @@
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 
 /**
  * 解决问题
- * 子组件onChange调用了父组件的handleOnChange
- * 父组件handleOnChange内部会执行setText(e.target.value)引起父组件更新
- * 父组件更新会得到新的handleOnChange，传递给子组件，对于子组件来说接收到一个新的props
- * 子组件进行不必要更新
+ * 组件重新渲染之间缓存函数定义
+ * 
  */
+
 export default function UseCallback() {
   const [text, setText] = useState('')
 
-  const handleOnChange = useCallback((e: any) => {
-    setText(e.target.value)
+  console.log('组件渲染了')
+  //状态更新，函数不会被重新定义
+  const handleSubmit = useCallback((value: string) => {
+    setText(value)
   }, [])
 
   return (
     <div>
       <div>text: {text}</div>
-      <Child onChange={handleOnChange} />
+      <input
+        type="text"
+        onChange={e => handleSubmit(e.target.value)}
+      />
     </div>
   )
 }
-
-const Child = React.memo<{ onChange: any }>(props => {
-  console.log('子组件渲染了')
-  return (
-    <input type="text" onChange={props.onChange} />
-  )
-})
