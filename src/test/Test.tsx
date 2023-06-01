@@ -1,23 +1,19 @@
-import { useEffect } from 'react'
-import { useCookie } from 'react-use'
+import { useState, useEffect, useCallback } from 'react'
 
-export default function Test() {
-  const [myCookie, updateCookie, deleteCoookie] = useCookie('my-cookie')
+const Component = () => {
+  const [count, setCount] = useState(0)
+  useEffect(() => console.log('开始计数'), [])
 
-  useEffect(() => {
-    deleteCoookie()
-    updateCookie('789', {
-      expires: new Date(Date.now() + 10 * 1000)
-    })
-  }, [])
-
-  useEffect(() => {
-    console.log(myCookie)
-  }, [myCookie])
+  const onClick = useCallback(() => {
+    console.log(count)
+    setCount(count + 1)
+  }, [count])
 
   return (
-    <div className="px-8 py-3">
-      {myCookie}
-    </div>
+    <>
+      <span>{count}</span>
+      <button onClick={onClick}>+1</button >
+    </>
   )
 }
+export default Component
