@@ -1,19 +1,15 @@
 import { useEffect } from 'react'
 import { useCookie } from 'react-use'
 
-export default function Test() {
+export default function Demo() {
   const [myCookie, updateCookie, deleteCoookie] = useCookie('my-cookie')
 
   useEffect(() => {
-    deleteCoookie()
-    updateCookie('789', {
-      expires: new Date(Date.now() + 10 * 1000)
+    deleteCoookie() //删除
+    updateCookie('456', {
+      expires: new Date(Date.now() + 10 * 1000) //过期时间 10s后
     })
   }, [])
-
-  useEffect(() => {
-    console.log(myCookie)
-  }, [myCookie])
 
   return (
     <div className="px-8 py-3">
