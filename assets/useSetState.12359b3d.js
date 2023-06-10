@@ -1,0 +1,1 @@
+import{r as n}from"./index.1da63547.js";var c=function(t){t===void 0&&(t={});var s=n.exports.useState(t),o=s[0],u=s[1],a=n.exports.useCallback(function(e){u(function(r){return Object.assign({},r,e instanceof Function?e(r):e)})},[]);return[o,a]};const i=c;export{i as u};
