@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { create } from 'zustand'
+import { combine } from 'zustand/middleware'
 
-interface TodoOpt {
+export interface Todo {
   id: number
   text: string
   completed: boolean
@@ -8,34 +9,25 @@ interface TodoOpt {
 
 export type TodoFilter = 'SHOW_ALL' | 'SHOW_COMPLETED' | 'SHOW_ACTIVE'
 
-interface Todo {
-  data: TodoOpt[]
-  filter: TodoFilter
-}
-
-const initialState: Todo = {
-  data: [],
-  filter: 'SHOW_ALL'
-}
-
-export const todoSlice = createSlice({
-  name: 'todo',
-  initialState,
-  reducers: {
-    addTodo: (state, action: PayloadAction<TodoOpt>) => {
-      state.data = [...state.data, action.payload]
-    },
-    toggleTodo: (state, action: PayloadAction<number>) => {
-      state.data = state.data.map(todo =>
-        todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo
-      )
-    },
-    switchTodoFilter: (state, action: PayloadAction<TodoFilter>) => {
-      state.filter = action.payload
-    }
-  }
-})
-
-export const { addTodo, toggleTodo, switchTodoFilter } = todoSlice.actions
-
-export default todoSlice.reducer
+export const useTodoStore = create(
+  combine({
+    data: [] as Todo[],
+    filter: 'SHOW_ALL' as TodoFilter,
+  },
+    set => ({
+      addTodo: (payload: Todo) => {
+        set(state => ({ data: [...state.data, payload] }))
+      },
+      toggleTodo: (payload: number) => {
+        set(state => ({
+          data: state.data.map(t => ({
+            ...t, completed: t.id === payload ? !t.completed : t.completed
+          }))
+        }))
+      },
+      switchTodoFilter: (payload: TodoFilter) => {
+        set(_ => ({ filter: payload }))
+      }
+    })
+  )
+)

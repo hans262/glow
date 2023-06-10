@@ -1,9 +1,7 @@
-import { Spin, Divider, message } from "antd";
+import { Spin, Divider, message, Button, Input } from "antd";
 import { useEffect, useRef } from "react";
 import Peer, { DataConnection, MediaConnection } from "peerjs";
 import { useSetState } from 'react-use'
-import { Button } from "../components/Button";
-import { Input, Textarea } from "../components/Input";
 
 //视频配置
 const msc = {
@@ -44,6 +42,7 @@ const App = () => {
   }, [state.connected])
 
   useEffect(() => {
+    if (peer.current) return
     peer.current = new Peer();
     peer.current.on("open", id => {
       setState({ localId: id })
@@ -159,7 +158,7 @@ const App = () => {
           >拷贝</span>
         </> : <Spin spinning={true} />}
       </div>
-      <div className="mb-2 space-x-2">
+      <div className="mb-2 space-x-2 flex">
         <Input
           readOnly={state.connected}
           value={state.remoteId}
@@ -168,6 +167,7 @@ const App = () => {
         />
         <Button onClick={callUser}
           disabled={state.connected}
+          type="primary"
         >
           {state.connected ? '已连接' : '连接对方'}
         </Button>
@@ -180,12 +180,14 @@ const App = () => {
       </div>
       <Divider />
       <div className="space-x-2 sticky top-0 mb-2">
-        <Textarea
+        <Input.TextArea
           value={state.customMsg}
           onChange={e => setState({ customMsg: e.target.value })}
           placeholder="请输入..."
         />
-        <Button onClick={sendMsg}>发消息</Button>
+        <Button onClick={sendMsg}
+          type="primary"
+        >发消息</Button>
       </div>
       <div>
         {state.messages.map((v, k) => <div key={k}>

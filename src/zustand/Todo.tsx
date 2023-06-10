@@ -1,37 +1,31 @@
 import { Input, List, Radio } from 'antd'
 import { RadioChangeEvent } from 'antd/lib/radio';
-import { TodoFilter, addTodo, toggleTodo, switchTodoFilter } from '../store/todo';
-import { useAppDispatch, useAppSelector } from '../store'
+import { useTodoStore, TodoFilter } from '../store/todo'
 
 let todoId = 0
 
 export default function Todo() {
-  const { data, filter } = useAppSelector((state) => state.todo)
-  const dispatch = useAppDispatch()
+  const store = useTodoStore(state => state)
 
   const onSearch = (v: string) => {
     if (!v.trim()) return
     const todo = { id: todoId++, text: v, completed: false }
-    dispatch(addTodo(todo))
-  }
-
-  const onTodoClick = (id: number) => {
-    dispatch(toggleTodo(id))
+    store.addTodo(todo)
   }
 
   const onRadioChange = (e: RadioChangeEvent) => {
     const filter = e.target.value as TodoFilter
-    dispatch(switchTodoFilter(filter))
+    store.switchTodoFilter(filter)
   }
 
   const filterTodo = (filter: TodoFilter) => {
     switch (filter) {
       case 'SHOW_COMPLETED':
-        return data.filter(td => td.completed)
+        return store.data.filter(td => td.completed)
       case 'SHOW_ACTIVE':
-        return data.filter(td => !td.completed)
+        return store.data.filter(td => !td.completed)
       default:
-        return data
+        return store.data
     }
   }
 
@@ -45,16 +39,16 @@ export default function Todo() {
       />
       <List
         bordered
-        dataSource={filterTodo(filter)}
+        dataSource={filterTodo(store.filter)}
         renderItem={(v) =>
           <List.Item
-            onClick={() => onTodoClick(v.id)}
+            onClick={() => store.toggleTodo(v.id)}
             style={{ color: v.completed ? 'red' : 'green', cursor: 'pointer' }}
           >{v.text}</List.Item>
         }
       />
       <Radio.Group
-        defaultValue={filter}
+        defaultValue={store.filter}
         onChange={onRadioChange}
         buttonStyle="solid"
       >
