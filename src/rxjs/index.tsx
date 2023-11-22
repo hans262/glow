@@ -1,23 +1,53 @@
-import { lazy } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { NavLink, Outlet, RouteObject } from "react-router-dom";
+import clsx from "clsx";
+import Queue from "./Queue";
+import RxDrag from "./RxDrag";
+import Subject from "./Subject";
+import Observable from "./Observable";
+import Progress from "./Progress";
 
-const Queue = lazy(() => import("./Queue"))
-const Drag = lazy(() => import("./RxDrag"))
-const Input = lazy(() => import("./Input"))
-const Observable = lazy(() => import("./Observable"))
-const Progress = lazy(() => import("./Progress"))
-const Subject = lazy(() => import("./Subject"))
-
-export default function Rxjs () {
+export const Layout: React.FC = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Queue />} />
-      <Route path={'drag'} element={<Drag />} />
-      <Route path={'input'} element={<Input />} />
-      <Route path={'observable'} element={<Observable />} />
-      <Route path={'progress'} element={<Progress />} />
-      <Route path={'subject'} element={<Subject />} />
-      <Route path="*" element={<Queue />} />
-    </Routes>
-  )
-}
+    <div className="container mx-auto">
+      <nav className="list-disc border-b p-6 text-xl">
+        {routes.map((r, k) => (
+          <li key={k}>
+            <NavLink
+              end={r.index}
+              to={r.index ? "" : r.path!}
+              className={({ isActive }) => clsx({ "text-[red]": isActive })}
+            >
+              {r.index ? "home" : r.path}
+            </NavLink>
+          </li>
+        ))}
+      </nav>
+      <div className="p-4">
+        <Outlet />
+      </div>
+    </div>
+  );
+};
+
+export const routes: RouteObject[] = [
+  {
+    index: true,
+    element: <Queue />,
+  },
+  {
+    path: "drag",
+    element: <RxDrag />,
+  },
+  {
+    path: "subject",
+    element: <Subject />,
+  },
+  {
+    path: "observable",
+    element: <Observable />,
+  },
+  {
+    path: "progress",
+    element: <Progress />,
+  },
+];

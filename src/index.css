@@ -1,25 +1,15 @@
-/* @tailwind base; */
-/* 于antd有冲突 */
-
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
-  font-weight: 400;
-  /* color-scheme: light dark; */
-  /* color: rgba(255, 255, 255, 0.87); */
-  /* background-color: #242424; */
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
 }
 
-body{
-  margin: 0px;
+/* antd 与tailwind 的冲突解决 */
+
+/* 按钮主题色不显示 */
+:where(.css-dev-only-do-not-override-1adbn6x).ant-btn-primary {
+  @apply bg-[#1677ff];
 }

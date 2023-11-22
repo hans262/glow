@@ -1,7 +1,6 @@
 {
-  "name": "glow",
+  "name": "react-example",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,8 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@tensorflow/tfjs": "^4.1.0",
-    "antd": "^5.0.3",
+    "antd": "^5.11.1",
+    "clsx": "^2.0.0",
     "openai": "^3.2.1",
     "peerjs": "^1.4.7",
     "react": "^18.2.0",
@@ -21,8 +22,8 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
-    "@types/react": "^18.0.24",
-    "@types/react-dom": "^18.0.8",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^2.2.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.19",

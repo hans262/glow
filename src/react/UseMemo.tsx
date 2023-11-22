@@ -1,27 +1,33 @@
 import { Button } from "antd"
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 export default function UseMemo() {
   const [count, setCount] = useState(0)
-  const [price, setPrice] = useState(5)
+  const [name, setName] = useState('hans')
 
   /**
    * 不会因count的改变
-   * 而造成引用price的ui重复渲染
+   * 下面的函数渲染
    */
-  const getPrice = useMemo(() => {
+  const getName = useMemo(() => {
+    console.log('不会渲染')
+    return 'my name is ' + name
+  }, [name])
+
+  //每次count更新，该函数执行了，这是不必要的
+  const getName2 = useCallback( () => {
     console.log('渲染了')
-    return () => price
-  }, [price])
+    return 'my name is ' + name
+  },[name])
 
   return (
     <>
       <h1>React: useMemo</h1>
       <div>count: {count}</div>
-      <div>price: {price}</div>
-      <div>memo化的price：{getPrice()}</div>
+      <div>{getName}</div>
+      <div>{getName2()}</div>
       <Button onClick={() => setCount(c => c + 1)}>count++</Button>
-      <Button onClick={() => setPrice(p => p + 1)}>price++</Button>
+      <Button onClick={() => setName('hans2')}>setName</Button>
     </>
   )
 }

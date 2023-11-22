@@ -17,7 +17,6 @@ module.exports = {
           '0%': { left: 0 },
           '75%, 100%': {
             left: '100%',
-            // right: 0,
             opacity: 0
           }
         },

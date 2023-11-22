@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { fromEvent, mergeMap, takeUntil } from 'rxjs'
+import { useEffect, useRef } from "react";
+import { fromEvent, mergeMap, takeUntil } from "rxjs";
 
 /**
  * takeUntil 某个时候结束流
@@ -7,49 +7,48 @@ import { fromEvent, mergeMap, takeUntil } from 'rxjs'
  */
 
 export default function RxDrag() {
-  const drag = useRef<HTMLDivElement>(null)
+  const drag = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const { current: dom } = drag
-    if (!dom) return
+    const { current: dom } = drag;
+    if (!dom) return;
 
-    let startOffsetX: number, endOffsetY: number
+    let startOffsetX: number, endOffsetY: number;
 
-    const mouseUp = fromEvent(document, 'mouseup')
-    const mouseMove = fromEvent(document, 'mousemove').pipe(
-      takeUntil(mouseUp)
-    )
-    const mouseDown = fromEvent(dom, 'mousedown')
-    const observable = mouseDown.pipe(
-      mergeMap(e => mouseMove)
-    )
+    const mouseUp = fromEvent(document, "mouseup");
+    const mouseMove = fromEvent(document, "mousemove").pipe(takeUntil(mouseUp));
+    const mouseDown = fromEvent(dom, "mousedown");
+    const observable = mouseDown.pipe(mergeMap((e) => mouseMove));
 
-    const start = mouseDown.subscribe(e => {
-      const { offsetX, offsetY } = e as any
-      startOffsetX = offsetX
-      endOffsetY = offsetY
-    })
+    const start = mouseDown.subscribe((e) => {
+      const { offsetX, offsetY } = e as any;
+      startOffsetX = offsetX;
+      endOffsetY = offsetY;
+    });
 
     const move = observable.subscribe((e: any) => {
-      const [left, top] = [e.clientX - startOffsetX, e.clientY - endOffsetY]
-      dom.style.left = left + 'px'
-      dom.style.top = top + 'px'
-    })
+      const [left, top] = [e.clientX - startOffsetX, e.clientY - endOffsetY];
+      dom.style.left = left + "px";
+      dom.style.top = top + "px";
+    });
 
     return () => {
-      start.unsubscribe()
-      move.unsubscribe()
-    }
-  })
+      start.unsubscribe();
+      move.unsubscribe();
+    };
+  });
   return (
-    <div className='px-8 py-3'>
-      <h1>Rx_Drag</h1>
-      <div ref={drag} style={{
-        position: 'absolute',
-        width: 100,
-        height: 100,
-        backgroundColor: 'blue',
-        cursor: 'move'
-      }}></div>
+    <div>
+      <div className="text-3xl mb-2">Rx_Drag</div>
+      <div
+        ref={drag}
+        style={{
+          position: "absolute",
+          width: 100,
+          height: 100,
+          backgroundColor: "blue",
+          cursor: "move",
+        }}
+      ></div>
     </div>
-  )
+  );
 }

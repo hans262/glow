@@ -1,46 +1,96 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-import Loading from './components/Loading';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  RouteObject,
+  NavLink,
+  Link,
+} from "react-router-dom";
+import { lazy, Suspense, useRef } from "react";
+import Loading from "./components/Loading";
+import { routes as rxjsRoutes, Layout as RxjsLayout } from "./rxjs";
+import { useMount } from "react-use";
 
-const Tensorflow = lazy(() => import('./tensorflow'))
-const Test = lazy(() => import('./test/Test'))
-const Zustand = lazy(() => import('./zustand'))
-const Rxjs = lazy(() => import('./rxjs'))
+const Tensorflow = lazy(() => import("./tensorflow"));
+const Zustand = lazy(() => import("./zustand"));
 
-const IconView = lazy(() => import('./components/Icon'))
-const MathJax = lazy(() => import('./test/MathJax'))
-const Mysql = lazy(() => import('./mysql'))
-const Peer = lazy(() => import('./test/Peer'))
-const AudioRecorder = lazy(() => import('./test/AudioRecorder'))
-const ImageClassify = lazy(() => import('./tensorflow/ImageClassify'))
-const ChatGpt3 = lazy(() => import('./test/ChatGpt3'))
+const MathJax = lazy(() => import("./test/MathJax"));
+const Peer = lazy(() => import("./test/Peer"));
+const AudioRecorder = lazy(() => import("./test/AudioRecorder"));
+const ImageClassify = lazy(() => import("./tensorflow/ImageClassify"));
+const ChatGpt3 = lazy(() => import("./test/ChatGpt3"));
 
-const DuckShooter = lazy(() => import('./duckshooter'))
-const BlockGame = lazy(() => import('./game/BlockGame'))
-const BalloonGame = lazy(() => import('./game/BalloonGame'))
+const DuckShooter = lazy(() => import("./duckshooter"));
+const BlockGame = lazy(() => import("./game/BlockGame"));
+const BalloonGame = lazy(() => import("./game/BalloonGame"));
 
 export default function App() {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route path={"/"} element={<ImageClassify />} />
-          <Route path={"/tensorflow"} element={<Tensorflow />} />
-          <Route path={"/test"} element={<Test />} />
-          <Route path="/zustand" element={<Zustand />} />
-          <Route path="/rxjs/*" element={<Rxjs />} />
-          <Route path="/chat_gpt3" element={<ChatGpt3 />} />
-          <Route path="/game_block" element={<BlockGame />} />
-          <Route path="/game_balloon" element={<BalloonGame />} />
-          <Route path="/game_duckshooter" element={<DuckShooter />} />
-          <Route path="/icon" element={<IconView />} />
-          <Route path="/mathjax" element={<MathJax />} />
-          <Route path="/mysql" element={<Mysql />} />
-          <Route path="/peer" element={<Peer />} />
-          <Route path="/audio_recorder" element={<AudioRecorder />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
-  )
+    <Suspense fallback={<Loading />}>
+      <RouterProvider
+        router={createBrowserRouter(routes, {
+          basename: import.meta.env.BASE_URL,
+        })}
+        fallbackElement={<Loading />}
+      />
+    </Suspense>
+  );
+}
+
+const Root: React.FC = () => {
+  return (
+    <div className="container mx-auto p-20">
+      <div className=" text-2xl text-center">React Example</div>
+      <nav className="text-xl">
+        {routes.map((r, k) => (
+          <li key={k}>
+            <NavLink to={r.path!}>
+              {r.path === "/" ? "home" : r.path?.slice(1)}
+            </NavLink>
+          </li>
+        ))}
+      </nav>
+    </div>
+  );
+};
+
+const routes: RouteObject[] = [
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: (
+      <div className="container mx-auto p-20">
+        <div className="text-2xl">404</div>
+        <Link className="text-xl" to="/">
+          back to home
+        </Link>
+      </div>
+    ),
+  },
+  { path: "/tensorflow", element: <Tensorflow /> },
+  { path: "/image-classify", element: <ImageClassify /> },
+  { path: "/zustand", element: <Zustand /> },
+  { path: "/chat-gpt3", element: <ChatGpt3 /> },
+  { path: "/game-block", element: <BlockGame /> },
+  { path: "/game-balloon", element: <BalloonGame /> },
+  { path: "/game-duckshooter", element: <DuckShooter /> },
+  { path: "/mathjax", element: <MathJax /> },
+  { path: "/peer", element: <Peer /> },
+  { path: "/audio-recorder", element: <AudioRecorder /> },
+  { path: "/test", element: <Test /> },
+  { path: "/rxjs", element: <RxjsLayout />, children: rxjsRoutes },
+];
+
+function Test() {
+  const canvas = useRef<HTMLCanvasElement>(null);
+
+  useMount(() => {
+    if (!canvas.current) return;
+    canvas.current.width = 600;
+    canvas.current.height = 400;
+
+    const ctx = canvas.current.getContext("2d")!;
+
+    ctx.strokeRect(10, 10, 200, 100);
+  });
+  return <canvas ref={canvas} className=" border"></canvas>;
 }

@@ -26,7 +26,7 @@ class Balloon {
   document: HTMLDivElement
   width = 160
   height = 160
-  timerUp: NodeJS.Timeout | null = null
+  timerUp: number | null = null
   FPS: number = 30
   constructor(public root: HTMLDivElement) {
     this.speed = ~~(Math.random() * 8) + 1
