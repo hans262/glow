@@ -24,6 +24,7 @@ const BlockGame = lazy(() => import("./game/BlockGame"));
 const BalloonGame = lazy(() => import("./game/BalloonGame"));
 
 export default function App() {
+  // console.log(import.meta.env)
   return (
     <Suspense fallback={<Loading />}>
       <RouterProvider
