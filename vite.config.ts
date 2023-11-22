@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: process.env.NODE_ENV === "production" ? "/glow/" : "/",
+  // base: process.env.NODE_ENV === "production" ? "/glow/" : "/",
   server: {
     port: 1234,
     // https: {
