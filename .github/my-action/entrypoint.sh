@@ -32,6 +32,9 @@ esac
 # 进入工作区目录
 cd $GITHUB_WORKSPACE && \
 
+git --version && \
+git config --global --add safe.directory /github/workspace && \
+
 # 初始化git
 git config --global user.email 771565119@qq.com && \
 git config --global user.name hans && \
