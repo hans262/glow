@@ -3,12 +3,11 @@ import {
   RouterProvider,
   RouteObject,
   NavLink,
-  Link,
 } from "react-router-dom";
-import { lazy, Suspense, useRef } from "react";
+import { lazy, Suspense } from "react";
 import Loading from "./components/Loading";
 import { routes as rxjsRoutes, Layout as RxjsLayout } from "./rxjs";
-import { useMount } from "react-use";
+import Test from "./test/Test";
 
 const Tensorflow = lazy(() => import("./tensorflow"));
 const Zustand = lazy(() => import("./zustand"));
@@ -31,7 +30,6 @@ export default function App() {
         router={createBrowserRouter(routes, {
           basename: import.meta.env.BASE_URL,
         })}
-        fallbackElement={<Loading />}
       />
     </Suspense>
   );
@@ -58,14 +56,6 @@ const routes: RouteObject[] = [
   {
     path: "/",
     element: <Root />,
-    errorElement: (
-      <div className="container mx-auto p-20">
-        <div className="text-2xl">404</div>
-        <Link className="text-xl" to="/">
-          back to home
-        </Link>
-      </div>
-    ),
   },
   { path: "/tensorflow", element: <Tensorflow /> },
   { path: "/image-classify", element: <ImageClassify /> },
@@ -80,18 +70,3 @@ const routes: RouteObject[] = [
   { path: "/test", element: <Test /> },
   { path: "/rxjs", element: <RxjsLayout />, children: rxjsRoutes },
 ];
-
-function Test() {
-  const canvas = useRef<HTMLCanvasElement>(null);
-
-  useMount(() => {
-    if (!canvas.current) return;
-    canvas.current.width = 600;
-    canvas.current.height = 400;
-
-    const ctx = canvas.current.getContext("2d")!;
-
-    ctx.strokeRect(10, 10, 200, 100);
-  });
-  return <canvas ref={canvas} className=" border"></canvas>;
-}
