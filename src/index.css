@@ -1,15 +1,12 @@
-@tailwind base;
+@layer tailwind-base, antd;
+
+@layer tailwind-base {
+  @tailwind base;
+}
 @tailwind components;
 @tailwind utilities;
 
 :root {
   font-size: 16px;
   line-height: 24px;
-}
-
-/* antd 与tailwind 的冲突解决 */
-
-/* 按钮主题色不显示 */
-:where(.css-dev-only-do-not-override-1adbn6x).ant-btn-primary {
-  @apply bg-[#1677ff];
 }
