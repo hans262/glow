@@ -3,45 +3,6 @@ import clsx from "clsx";
 import { useRef } from "react";
 import { useMount, useSetState } from "react-use";
 
-/**
- * 实现测量当前分贝
- */
-
-const drawNextFrame = (
-  analyserNode: AnalyserNode,
-  canvas: HTMLCanvasElement,
-  getRootWidth: () => number
-) => {
-  requestAnimationFrame((n) => {
-    drawNextFrame(analyserNode, canvas, getRootWidth);
-  });
-  const dataArray = new Uint8Array(analyserNode.frequencyBinCount);
-  // 长度为 analyser.frequencyBinCount
-  const bufferLength = dataArray.length;
-  const ctx = canvas.getContext("2d")!;
-  //复制当前波形或时域数据到buffer
-  analyserNode.getByteFrequencyData(dataArray);
-  //getByteFrequencyData getByteTimeDomainData
-
-  const [width, height] = [getRootWidth(), 300];
-  canvas.width = width;
-  canvas.height = height;
-  ctx.fillStyle = "rgb(200, 200, 200)";
-  ctx.strokeStyle = "rgb(0, 0, 0)";
-  ctx.fillRect(0, 0, width, height);
-
-  let sliceWidth = width / bufferLength;
-  let x = 0;
-  for (let i = 0; i < bufferLength; i++) {
-    let y = (dataArray[i] * height) / 256;
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    x += sliceWidth;
-  }
-};
-
 const AudioRecorder: React.FC = () => {
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -55,33 +16,33 @@ const AudioRecorder: React.FC = () => {
   });
 
   useMount(async () => {
-    if (!canvasRef.current) return;
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-    });
-    if (!stream) {
+    try {
+      if (!canvasRef.current) return;
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      mediaStream.current = stream;
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      mediaRecorderRef.current.ondataavailable = (evt) => {
+        console.log(evt.data);
+        setState((e) => ({ chunks: [...e.chunks, evt.data] }));
+        // const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=opus' })
+      };
+
+      const audioCtx = new AudioContext();
+      //媒体流音频节点
+      const sourceNode = audioCtx.createMediaStreamSource(stream);
+
+      //实时频域节点
+      analyserNodeRef.current = audioCtx.createAnalyser();
+      analyserNodeRef.current.fftSize = 512;
+      sourceNode.connect(analyserNodeRef.current);
+
+      drawNextFrame(analyserNodeRef.current, canvasRef.current, getRootWidth);
+    } catch (err) {
+      console.log(err)
       console.log("麦克风访问错误");
-      return;
     }
-
-    mediaStream.current = stream;
-    mediaRecorderRef.current = new MediaRecorder(stream);
-    mediaRecorderRef.current.ondataavailable = (evt) => {
-      console.log(evt.data);
-      setState((e) => ({ chunks: [...e.chunks, evt.data] }));
-      // const blob = new Blob(this.chunks, { 'type': 'audio/webm; codecs=opus' })
-    };
-
-    const audioCtx = new AudioContext();
-    //媒体流音频节点
-    const sourceNode = audioCtx.createMediaStreamSource(stream);
-
-    //实时频域节点
-    analyserNodeRef.current = audioCtx.createAnalyser();
-    analyserNodeRef.current.fftSize = 512;
-    sourceNode.connect(analyserNodeRef.current);
-
-    drawNextFrame(analyserNodeRef.current, canvasRef.current, getRootWidth);
   });
 
   const onRecord = () => {
@@ -121,8 +82,8 @@ const AudioRecorder: React.FC = () => {
       <div className="flex items-center space-x-2">
         <div
           className={clsx("rounded-full w-7 h-7 bg-black", {
-            "bg-[red]": state.status === "recording",
-            "bg-[green]": state.status === "paused",
+            "!bg-[red]": state.status === "recording",
+            "!bg-[green]": state.status === "paused",
           })}
         />
         <Button onClick={onRecord} type="primary">
@@ -144,3 +105,43 @@ const AudioRecorder: React.FC = () => {
 };
 
 export default AudioRecorder;
+
+
+/**
+ * 实现测量当前分贝
+ */
+
+const drawNextFrame = (
+  analyserNode: AnalyserNode,
+  canvas: HTMLCanvasElement,
+  getRootWidth: () => number
+) => {
+  requestAnimationFrame((n) => {
+    drawNextFrame(analyserNode, canvas, getRootWidth);
+  });
+  const dataArray = new Uint8Array(analyserNode.frequencyBinCount);
+  // 长度为 analyser.frequencyBinCount
+  const bufferLength = dataArray.length;
+  const ctx = canvas.getContext("2d")!;
+  //复制当前波形或时域数据到buffer
+  analyserNode.getByteFrequencyData(dataArray);
+  //getByteFrequencyData getByteTimeDomainData
+
+  const [width, height] = [getRootWidth(), 300];
+  canvas.width = width;
+  canvas.height = height;
+  ctx.fillStyle = "rgb(200, 200, 200)";
+  ctx.strokeStyle = "rgb(0, 0, 0)";
+  ctx.fillRect(0, 0, width, height);
+
+  let sliceWidth = width / bufferLength;
+  let x = 0;
+  for (let i = 0; i < bufferLength; i++) {
+    let y = (dataArray[i] * height) / 256;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    x += sliceWidth;
+  }
+};
