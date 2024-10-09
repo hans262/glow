@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import './index.css'
+import './index.less'
 
 if (import.meta.env.VITE_VCONSOLE === "true") {
   import('vconsole').then(vconsole => {
