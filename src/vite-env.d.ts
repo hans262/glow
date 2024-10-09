@@ -8,3 +8,5 @@ declare module '*.ogg' {
   const source: string
   export default source
 }
+
+declare module 'nativeshare';
